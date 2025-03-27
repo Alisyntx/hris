@@ -1,5 +1,5 @@
-$(document).ready(function () {
-    $(".empTrackBtn").click(function () {
+export function handleTrackEmployee() {
+    $(document).on("click", ".empTrackBtn", function () {
         var url = "views/forms/employeeForms/trackEmpForm.php";
         var empId = $(this).attr("id");
         $.post(url, { getId: empId }, function (response) {
@@ -7,4 +7,4 @@ $(document).ready(function () {
             detailsEmp.showModal();
         });
     });
-});
+}

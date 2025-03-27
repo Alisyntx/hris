@@ -33,7 +33,7 @@ $employees = $stmt->fetchAll();
         </a>
     </div>
 
-    <div class="w-[1123px] h-screen overflow-x-auto">
+    <div class="w-auto h-screen overflow-x-auto">
         <table class="table table-zebra w-full text-sm pt-2 font-popins">
             <thead>
                 <tr>

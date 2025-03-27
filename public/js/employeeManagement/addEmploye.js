@@ -4,7 +4,28 @@ export function handleAddEmployee() {
             $("#loadAddEmp").html(data);
             addEmp.showModal();
 
-            // Ensure event bindings are applied after content loads
+            // Re-bind image preview event AFTER loading the form
+            document
+                .getElementById("imagePreview")
+                .addEventListener("click", function () {
+                    document.getElementById("profileImage").click();
+                });
+
+            document
+                .getElementById("profileImage")
+                .addEventListener("change", function (event) {
+                    const file = event.target.files[0];
+                    if (file) {
+                        const reader = new FileReader();
+                        reader.onload = function (e) {
+                            document.getElementById("previewImg").src =
+                                e.target.result;
+                        };
+                        reader.readAsDataURL(file);
+                    }
+                });
+
+            // Bind form submission event
             bindAddEmpForm();
         });
     });
@@ -26,6 +47,8 @@ function bindAddEmpForm() {
                 success: function (response) {
                     if (response.status === "success") {
                         addEmp.close();
+
+                        // Add new row dynamically
                         let newRow = `
                         <tr style="display: none;">
                             <td>${response.emp_id}</td>
@@ -44,6 +67,9 @@ function bindAddEmpForm() {
                                 <button class="empEditBtn btn btn-xs btn-circle" id="${response.emp_id}">
                                     <i class='bx bx-edit-alt text-[15px]'></i>
                                 </button>
+                                <button class="empDeleteBtn btn btn-xs btn-circle" id="${response.emp_id}">
+                                    <i class='bx bx-trash text-[15px]'></i>
+                                </button>
                             </td>
                         </tr>`;
 
@@ -51,8 +77,13 @@ function bindAddEmpForm() {
                         $("#employeeTabled").prepend(newRow);
                         $("#employeeTabled tr:first").fadeIn("slow");
 
+                        // Reset form after submission
                         $("#addEmpFormBtn")[0].reset();
+
+                        // Show success toast
+                        showToast("Employee added successfully!", "success");
                     } else {
+                        showToast(response.message, "error");
                         alert(response.message);
                     }
                 },
@@ -61,4 +92,23 @@ function bindAddEmpForm() {
                 },
             });
         });
+}
+
+function showToast(message, type) {
+    let toastClass = type === "success" ? "alert-success" : "alert-error";
+
+    let toast = $(`
+        <div class="alert ${toastClass} text-white shadow-lg p-3 flex items-center gap-2">
+            <span>${message}</span>
+        </div>
+    `);
+
+    $("#toastAlertMessage").append(toast);
+
+    // Auto-hide after 3 seconds
+    setTimeout(() => {
+        toast.fadeOut(300, function () {
+            $(this).remove();
+        });
+    }, 3000);
 }

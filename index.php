@@ -18,7 +18,7 @@
 </head>
 
 <body class="select-none">
-    <div class="h-screen w-screen flex flex-row gap-1 overflow-x-hidden">
+    <div class="h-screen w-full flex flex-row gap-1 overflow-x-hidden">
         <?php
         include 'views/includes/navbar.php';
         ?>
@@ -28,6 +28,8 @@
             ?>
             <!-- al contents here -->
             <div class="overflow-y-auto mt-1 rounded-sm">
+                <div class="toast toast-top toast-end font-popins" id="toastAlertMessage">
+                </div>
                 <?php
                 $page = isset($_GET['page']) ? $_GET['page'] : 'dashboard';
                 $allowed_pages = ['dashboard', 'employees', 'attendance', 'payroll', 'reports', 'settings'];

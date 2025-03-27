@@ -12,8 +12,8 @@
 <body>
     <nav class="bg-accentclr p-4 h-screen w-[20%] rounded-r-md">
         <div class="flex flex-col space-y-4 font-popins">
-            <div class="h-20  w-full mb-14">
-                <img src="public/image/logo.png" class="absolute top-[-8%] left-0  bg-center z-0 " alt="">
+            <div class="h-20 w-full mb-14 flex justify-center items-center">
+                <img src="public/image/logo.png" class="max-w-full h-auto object-contain" alt="Logo">
             </div>
 
 
@@ -32,7 +32,13 @@
                 <i class='bx bxs-user text-2xl mr-2'></i>
                 Employees
             </a>
-            <a href="index.php?page=attendance" class="  p-2 rounded-sm  <?= $current_page == 'dashboard' ? 'text-accentclr bg-secondaryclr ' : 'text-accentclr' ?>">Attendance</a>
+            <a href="index.php?page=attendance"
+                class="p-2 rounded-sm flex items-center transition-all duration-300 ease-in-out
+          <?= $current_page == 'attendance' ? 'text-primaryclr bg-mainclr ' : 'text-accentclr bg-primaryclr' ?>
+          hover:text-primaryclr hover:bg-mainclr">
+                <i class='bx bx-calendar-check text-2xl mr-2'></i>
+                attendance
+            </a>
             <a href="index.php?page=payroll" class="  p-2 rounded-sm  <?= $current_page == 'dashboard' ? 'text-accentclr bg-secondaryclr ' : 'text-accentclr' ?>">Payroll</a>
             <a href="index.php?page=reports" class="  p-2 rounded-sm  <?= $current_page == 'dashboard' ? 'text-accentclr bg-secondaryclr ' : 'text-accentclr' ?>">Reports</a>
             <a href="index.php?page=settings" class="  p-2 rounded-sm  <?= $current_page == 'dashboard' ? 'text-accentclr bg-secondaryclr ' : 'text-accentclr' ?>">Settings</a>

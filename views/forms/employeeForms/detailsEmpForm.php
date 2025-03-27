@@ -19,7 +19,11 @@ if ($empId) {
             <h3 class="text-xl font-semibold text-gray-800">Employee Details</h3>
             <p class="text-sm text-gray-500">View employee information</p>
         </div>
-
+        <div class="avatar flex justify-center items-center flex-col relative">
+            <div class="mt-2 w-24 rounded-lg overflow-hidden border border-gray-300 cursor-pointer relative" id="imagePreview">
+                <img id="previewImg" src="http://localhost/hris/<?php echo $emp['emp_profPic']; ?>" class="w-full h-full object-cover" />
+            </div>
+        </div>
         <?php if ($emp): ?>
             <div class="mt-4 space-y-3 border-t border-gray-200 pt-4">
                 <div class="flex items-center mt-2">

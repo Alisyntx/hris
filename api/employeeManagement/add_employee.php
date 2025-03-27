@@ -3,8 +3,6 @@ include '../../database/conn.php'; // Your PDO connection file
 
 header('Content-Type: application/json');
 
-$response = [];
-
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $fname = $_POST['fname'] ?? '';
     $mname = $_POST['mname'] ?? '';
@@ -27,9 +25,22 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         exit;
     }
 
+    // Handle image upload
+    $imagePath = null;
+    if (!empty($_FILES['profileImage']['name'])) {
+        $targetDir = "../../storage/employee/"; // Change to your storage path
+        $fileName = time() . "_" . basename($_FILES["profileImage"]["name"]);
+        $targetFile = $targetDir . $fileName;
+
+        // Move file to storage folder
+        if (move_uploaded_file($_FILES["profileImage"]["tmp_name"], $targetFile)) {
+            $imagePath = "storage/employee/" . $fileName; // Save relative path
+        }
+    }
+
     try {
-        $sql = "INSERT INTO employee (emp_fname, emp_mname, emp_lname, emp_suffix, emp_age, emp_gender, emp_address, emp_position, emp_department, emp_promotion, emp_dateHire) 
-                VALUES (:fname, :mname, :lname, :suffix, :age, :gender, :address, :position, :department, :promotion, :date_hire)";
+        $sql = "INSERT INTO employee (emp_fname, emp_mname, emp_lname, emp_suffix, emp_age, emp_gender, emp_address, emp_position, emp_department, emp_promotion, emp_dateHire, emp_profPic) 
+                VALUES (:fname, :mname, :lname, :suffix, :age, :gender, :address, :position, :department, :promotion, :date_hire, :profileImage)";
 
         $stmt = $pdo->prepare($sql);
         $stmt->execute([
@@ -43,22 +54,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             ':position' => $position,
             ':department' => $department,
             ':promotion' => $promotion,
-            ':date_hire' => $date_hire
+            ':date_hire' => $date_hire,
+            ':profileImage' => $imagePath
         ]);
+
         $lastId = $pdo->lastInsertId();
 
         echo json_encode([
             'status' => 'success',
             'message' => 'Employee added successfully!',
-            "emp_id" => $lastId,
-            "emp_fname" => $fname,
-            "emp_mname" => $mname,
-            "emp_lname" => $lname,
-            "emp_suffix" => $suffix,
-            "emp_position" => $position,
-            "emp_department" => $department,
-            "emp_promotion" => $promotion,
-            "emp_dateHire" => $date_hire,
+            'emp_id' => $lastId,
+            'profileImage' => $imagePath
         ]);
     } catch (PDOException $e) {
         echo json_encode([

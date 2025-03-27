@@ -2,7 +2,24 @@
     <div class="modal-box font-popins">
         <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2" onclick="addEmp.close()">✕</button>
         <h3 class="text-lg font-semibold text-center">Add Employee</h3>
-        <form id="addEmpFormBtn" method="post">
+        <form id="addEmpFormBtn" method="post" enctype="multipart/form-data">
+            <div class="avatar flex justify-center items-center flex-col relative">
+                <div class="w-24 rounded-lg overflow-hidden border border-gray-300 cursor-pointer relative" id="imagePreview">
+                    <img id="previewImg" src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp" class="w-full h-full object-cover" />
+
+                    <!-- Camera Icon Overlay -->
+                    <div class="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 opacity-0 hover:opacity-100 transition duration-200">
+                        <i class="bx bx-camera text-white text-2xl"></i>
+                    </div>
+                </div>
+
+                <!-- Hidden File Input -->
+                <input type="file" id="profileImage" name="profileImage" class="hidden" accept="image/*" />
+
+                <!-- Hint Text -->
+                <p class="text-xs text-gray-500 mt-1">Click to upload a profile picture</p>
+            </div>
+
             <div class="w-full flex flex-row gap-2">
                 <input type="text" placeholder="firstname" name="fname" class="input input-sm w-full mt-2" />
                 <input type="text" placeholder="middlename" name="mname" class="input input-sm w-full mt-2" />
