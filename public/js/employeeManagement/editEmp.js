@@ -24,7 +24,7 @@ function bindEditEmpForm() {
                 cache: false,
                 processData: false,
                 success: function (response) {
-                    if (response.success) {
+                    if (response.status === "success") {
                         // Close modal
                         editEmp.close();
                         // Find the updated row

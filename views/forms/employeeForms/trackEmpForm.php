@@ -37,18 +37,18 @@ if ($empId) {
 
         // Determine the next evaluation
         if ($today < $threeMonthEval) {
-            $nextEvalDate = $threeMonthEval->format('m/d/Y');
+            $nextEvalDate = $threeMonthEval->format('F j, Y');
             $nextEvalType = '3-Month Evaluation';
         } elseif ($today < $fiveMonthEval) {
-            $nextEvalDate = $fiveMonthEval->format('m/d/Y');
+            $nextEvalDate = $fiveMonthEval->format('F j, Y');
             $nextEvalType = '5-Month Evaluation';
         } elseif ($today < $annualEval) {
-            $nextEvalDate = $annualEval->format('m/d/Y');
+            $nextEvalDate = $annualEval->format('F j, Y');
             $nextEvalType = 'Annual Evaluation';
         } else {
             // If past all evaluations, set next annual evaluation
             $annualEval->modify('+1 year');
-            $nextEvalDate = $annualEval->format('m/d/Y');
+            $nextEvalDate = $annualEval->format('F j, Y');
             $nextEvalType = 'Annual Evaluation';
         }
 
@@ -82,7 +82,7 @@ if ($empId) {
                     <?php if ($emp): ?>
                         <tr>
                             <td><?= htmlspecialchars($emp['emp_fname'] . ' ' . $emp['emp_mname'] . ' ' . $emp['emp_lname'] . ' ' . $emp['emp_suffix']) ?></td>
-                            <td><?= date('m/d/Y', strtotime($emp['emp_dateHire'])) ?></td>
+                            <td><?= date('F j, Y', strtotime($emp['emp_dateHire'])) ?></td>
                             <td><?= $nextEvalDate ?></td>
                             <td><?= $nextEvalType ?></td>
                             <td id="status-<?= $emp['emp_id'] ?>"><?= $status ?></td>

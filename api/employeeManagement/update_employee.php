@@ -97,8 +97,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         echo json_encode([
             'status' => 'success',
-            'message' => 'Employee updated successfully!',
-            'profileImage' => $imagePath
+            'message' => 'Employee updated successfully!'
+            // 'profileImage' => $imagePath
         ]);
     } catch (PDOException $e) {
         echo json_encode(['status' => 'error', 'message' => 'Database error: ' . $e->getMessage()]);

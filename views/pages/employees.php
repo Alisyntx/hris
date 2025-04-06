@@ -55,20 +55,28 @@ $employees = $stmt->fetchAll();
                             <td><?= htmlspecialchars($employee['emp_position']); ?></td>
                             <td><?= htmlspecialchars($employee['emp_department']); ?></td>
                             <td><?= htmlspecialchars($employee['emp_promotion']); ?></td>
-                            <td><?= htmlspecialchars($employee['emp_dateHire']); ?></td>
+                            <td><?= date("F j, Y", strtotime($employee['emp_dateHire'])); ?></td>
                             <td>
-                                <button class="empDetailsBtn btn btn-xs btn-circle" id="<?= htmlspecialchars($employee['emp_id']); ?>">
-                                    <i class='bx bx-info-circle text-[15px]'></i>
-                                </button>
-                                <button class="empTrackBtn btn btn-xs btn-circle" id="<?= htmlspecialchars($employee['emp_id']); ?>">
-                                    <i class='bx bx-line-chart-down text-[15px]'></i>
-                                </button>
-                                <button class="empEditBtn btn btn-xs btn-circle" id="<?= htmlspecialchars($employee['emp_id']); ?>">
-                                    <i class='bx bx-edit-alt text-[15px]'></i>
-                                </button>
-                                <button class="empDeleteBtn btn btn-xs btn-circle" id="<?= htmlspecialchars($employee['emp_id']); ?>">
-                                    <i class='bx bx-trash text-[15px]'></i>
-                                </button>
+                                <div class="tooltip tooltip-close tooltip-info tooltip-top" data-tip="More Details">
+                                    <button class="empDetailsBtn btn btn-xs btn-circle" id="<?= htmlspecialchars($employee['emp_id']); ?>">
+                                        <i class='bx bx-info-circle text-[15px]'></i>
+                                    </button>
+                                </div>
+                                <div class="tooltip tooltip-close tooltip-info tooltip-top" data-tip="Evaluation Tracker">
+                                    <button class="empTrackBtn btn btn-xs btn-circle" id="<?= htmlspecialchars($employee['emp_id']); ?>">
+                                        <i class='bx bx-line-chart-down text-[15px]'></i>
+                                    </button>
+                                </div>
+                                <div class="tooltip tooltip-close tooltip-info tooltip-top" data-tip="Edit">
+                                    <button class="empEditBtn btn btn-xs btn-circle" id="<?= htmlspecialchars($employee['emp_id']); ?>">
+                                        <i class='bx bx-edit-alt text-[15px]'></i>
+                                    </button>
+                                </div>
+                                <div class="tooltip tooltip-close tooltip-info tooltip-top" data-tip="Delete">
+                                    <button class="empDeleteBtn btn btn-xs btn-circle" id="<?= htmlspecialchars($employee['emp_id']); ?>">
+                                        <i class='bx bx-trash text-[15px]'></i>
+                                    </button>
+                                </div>
                             </td>
                         </tr>
                     <?php endforeach; ?>

@@ -13,6 +13,9 @@
     <script type="module" src="public/js/main.js"></script>
     <!-- datatables -->
     <link rel="stylesheet" href="node_modules/datatables.net-dt/css/dataTables.dataTables.css">
+    <!-- sweatalert -->
+    <script src="node_modules/sweetalert2/dist/sweetalert2.all.min.js"></script>
+    <link rel="stylesheet" href="node_modules/sweetalert2/dist/sweetalert2.min.css">
 
     <title>index</title>
 </head>
@@ -32,7 +35,7 @@
                 </div>
                 <?php
                 $page = isset($_GET['page']) ? $_GET['page'] : 'dashboard';
-                $allowed_pages = ['dashboard', 'employees', 'attendance', 'payroll', 'reports', 'settings'];
+                $allowed_pages = ['dashboard', 'employees', 'attendance', 'dtrReport', 'reports', 'settings'];
 
                 if (in_array($page, $allowed_pages)) {
                     include "views/pages/$page.php";

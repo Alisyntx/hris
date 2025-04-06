@@ -1,3 +1,22 @@
+<?php
+include 'database/conn.php';
+
+$dateToday = date('Y-m-d'); // Get today's date
+
+$query = "SELECT 
+            t.*, 
+            e.emp_fname, e.emp_mname, e.emp_lname, e.emp_suffix, 
+            e.emp_age, e.emp_gender, e.emp_address, e.emp_position, 
+            e.emp_department, e.emp_promotion, e.emp_profPic, e.emp_dateHire 
+          FROM timekeeping t
+          INNER JOIN employee e ON t.time_empId = e.emp_id
+          WHERE t.time_dateAdd = :dateToday";
+$stmt = $pdo->prepare($query);
+$stmt->bindParam(':dateToday', $dateToday);
+$stmt->execute();
+$dtrRecords = $stmt->fetchAll(PDO::FETCH_ASSOC);
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -8,7 +27,183 @@
 </head>
 
 <body>
-    <div>Attendance</div>
+    <div class="w-auto h-screen rounded-sm mr-1 overflow-hidden bg-secondaryclr font-popins">
+        <div class="w-full flex flex-row gap-1 h-18 ">
+            <div class="bg-accentclr justify-evenly h-full flex-1 rounded-sm flex p-2 flex-col items-center">
+                <div>
+                    <div class="text-xl font-bold text-primaryclr px-10 text-center" id="totalPresent">0</div>
+                </div>
+                <div class="w-full h-[1px] bg-primaryclr"></div>
+                <div class="text-md text-primaryclr px-10">Present</div>
+            </div>
+            <div class="bg-accentclr h-full flex-1 rounded-sm">
+                <div class="bg-accentclr justify-evenly h-full flex-1 rounded-sm flex p-2 flex-col items-center">
+                    <div class="text-xl font-bold text-primaryclr px-10 text-center" id="totalLate">0</div>
+                    <div class="w-full h-[1px] bg-primaryclr"></div>
+                    <div class="text-md text-primaryclr px-10">Late</div>
+                </div>
+            </div>
+            <div class="bg-accentclr h-full w-1/6 rounded-sm">
+                <div class="bg-accentclr justify-evenly h-full flex-1 rounded-sm flex p-2 flex-col items-center">
+                    <div class="text-xl font-bold text-primaryclr px-10 text-center" id="totalAbsent">0</div>
+                    <div class="w-full h-[1px] bg-primaryclr"></div>
+                    <div class="text-md text-primaryclr px-10">Absent</div>
+                </div>
+            </div>
+            <div class="bg-accentclr h-full w-1/6 rounded-sm">
+                <div class="bg-accentclr justify-evenly h-full flex-1 rounded-sm flex p-2 flex-col items-center">
+                    <div class="text-xl font-bold text-primaryclr px-10 text-center">0</div>
+                    <div class="w-full h-[1px] bg-primaryclr"></div>
+                    <div class="text-sm text-primaryclr text-center">On Leave</div>
+                </div>
+            </div>
+            <div class="bg-accentclr h-full w-1/6 rounded-sm">
+                <div class="bg-accentclr justify-evenly h-full flex-1 rounded-sm flex p-2 flex-col items-center">
+                    <div class="text-xl font-bold text-primaryclr px-10 text-center">0</div>
+                    <div class="w-full h-[1px] bg-primaryclr"></div>
+                    <div class="text-sm text-primaryclr text-center">Pending Leave</div>
+                </div>
+            </div>
+            <div class="bg-accentclr h-full w-1/6 rounded-sm">
+                <div class="bg-accentclr h-full flex-1 rounded-sm justify-evenly flex p-2 flex-col items-center">
+                    <div class="text-xl font-bold text-primaryclr px-10 text-center">20</div>
+                    <div class="w-full h-[1px] bg-primaryclr"></div>
+                    <div class="text-sm text-primaryclr text-center">Overtime Request</div>
+                </div>
+            </div>
+        </div>
+        <div class="w-full flex flex-col mt-1">
+            <div class="w-full h-9 flex flex-row items-center ml-1">
+                <!-- Search Bar -->
+                <label class="input input-sm flex items-center border border-gray-300 rounded-md px-2 focus-within:ring-0 focus-within:border-gray-400">
+                    <i class='bx bx-search-alt text-mainclr text-[20px]'></i>
+                    <input type="search" id="searchEmployee" class="grow px-2 focus:outline-none" placeholder="search">
+                </label>
+                <!-- Add New Employee Button -->
+                <a class="px-2 py-1 ml-2 font-popins text-sm rounded-sm flex items-center transition-all duration-300 ease-in-out 
+                   text-primaryclr bg-accentclr hover:text-mainclr hover:bg-primaryclr active:scale-95 active:opacity-80">
+                    <i class='bx bx-filter-alt text-xl mr-2'></i>
+                    Filter
+                </a>
+                <label for="fileInput" class="cursor-pointer px-2 py-1 ml-2 font-popins text-sm rounded-sm flex items-center transition-all duration-300 ease-in-out 
+                   text-primaryclr bg-accentclr hover:text-mainclr hover:bg-primaryclr active:scale-95 active:opacity-80">
+                    <i class='bx bx-upload text-xl mr-2'></i>
+                    Import
+                </label>
+                <input type="file" id="fileInput" accept=".xlsx,.xls" class="hidden">
+                <!-- Save Button -->
+                <button id="saveFile" class="px-2 py-1 ml-2 font-popins text-sm rounded-sm items-center transition-all duration-300 ease-in-out 
+                   text-white bg-green-500 hover:bg-green-700 active:scale-95 active:opacity-80 hidden">
+                    <i class='bx bx-save text-xl mr-2'></i>
+                    Save Data
+                </button>
+            </div>
+            <div class="overflow-x-auto">
+                <table class="table">
+                    <!-- head -->
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Department</th>
+                            <th>In</th>
+                            <th>Out</th>
+                            <th>Total Hours</th> <!-- Added this column -->
+                            <th>Status</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody id="dtrTable">
+                        <?php if ($dtrRecords): ?>
+                            <?php foreach ($dtrRecords as $dtr): ?>
+                                <tr>
+                                    <td>
+                                        <div class="flex items-center gap-3">
+                                            <div class="avatar">
+                                                <div class="mask mask-squircle h-12 w-12">
+                                                    <img src="http://localhost/hris/<?php echo $dtr['emp_profPic']; ?>" alt="Employee Image" />
+                                                </div>
+                                            </div>
+                                            <div>
+                                                <div class="font-bold">
+                                                    <?= htmlspecialchars($dtr['emp_fname'] . ' ' . $dtr['emp_mname'] . ' ' . $dtr['emp_lname'] . ' ' . $dtr['emp_suffix']); ?>
+                                                </div>
+                                                <div class="text-sm opacity-50"><?= htmlspecialchars($dtr['emp_position']); ?></div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td><?= htmlspecialchars($dtr['emp_department']); ?></td>
+                                    <td>
+                                        <?= $dtr['time_in'] ? date("g:i A", strtotime($dtr['time_in'])) : '--'; ?>
+                                    </td>
+                                    <td>
+                                        <?= $dtr['time_out'] ? date("g:i A", strtotime($dtr['time_out'])) : '--'; ?>
+                                    </td>
+                                    <td class="text-center font-semibold">
+                                        <?php
+                                        if (!empty($dtr['time_in']) && !empty($dtr['time_out'])) {
+                                            $timeIn = strtotime($dtr['time_in']);
+                                            $timeOut = strtotime($dtr['time_out']);
+
+                                            // Ensure time_out is after time_in
+                                            if ($timeOut > $timeIn) {
+                                                $totalHours = (($timeOut - $timeIn) / 3600) - 1; // Convert seconds to hours and subtract break time
+                                                echo number_format($totalHours, 2); // Format to 2 decimal places
+                                            } else {
+                                                echo '--'; // Invalid time range
+                                            }
+                                        } else {
+                                            echo '--'; // If either time_in or time_out is missing
+                                        }
+                                        ?>
+                                    </td>
+                                    <td><?= htmlspecialchars($dtr['time_remarks']); ?></td>
+                                    <td>
+                                        <button class="btn btn-xs btn-circle">
+                                            <i class='bx bx-edit-alt text-lg'></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            <?php endforeach; ?>
+                        <?php else: ?>
+                            <tr>
+                                <td colspan="7" class="text-center">No DTR records found for today.</td>
+                            </tr>
+                        <?php endif; ?>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
 </body>
 
 </html>
+<script>
+    $(document).ready(function() {
+        $('#searchEmployee').on('keyup', function() {
+            const value = $(this).val().toLowerCase();
+
+            let matchCount = 0;
+
+            $('#dtrTable tr').each(function() {
+                const rowText = $(this).text().toLowerCase();
+                const isMatch = rowText.indexOf(value) > -1;
+                $(this).toggle(isMatch);
+
+                if (isMatch) {
+                    matchCount++;
+                }
+            });
+
+            // Remove existing "no data" row if it exists
+            $('#dtrTable .no-data-row').remove();
+
+            if (matchCount === 0) {
+                $('#dtrTable').append(`
+                    <tr class="no-data-row">
+                        <td colspan="7" class="text-center">No records found</td>
+                    </tr>
+                `);
+            }
+        });
+    });
+</script>
