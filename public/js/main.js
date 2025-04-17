@@ -10,6 +10,9 @@ import { handleAttendanceReport } from "./timeKeeping/attendanceReport.js";
 import { handleDepartmentSelect } from "./timeKeeping/departmentSelect.js";
 import { handleSearchInput } from "./timeKeeping/searchInput.js";
 import { handleAttendanceExport } from "./timeKeeping/attendanceExport.js";
+import { handleDownloadDtr } from "./timeKeeping/downloadDtr.js";
+import { handleEditEmployeeDtr } from "./timeKeeping/editEmpDtr.js";
+
 $(document).ready(function () {
     handleEditEmployee();
     handleAddEmployee();
@@ -19,6 +22,8 @@ $(document).ready(function () {
     handleDepartmentSelect();
     handleSearchInput();
     handleAttendanceExport();
+    handleDownloadDtr();
+    handleEditEmployeeDtr();
     $.getScript("public/js/employeeManagement/deleteEmploye.js");
 
     $(document).ready(function () {

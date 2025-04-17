@@ -66,7 +66,7 @@ export function handleDtrImport() {
                     row[0], // Employee ID
                     row[1], // Employee Name
                     excelDateToJSDate(row[2]), // Convert Date
-                    excelTimeToJSTime(row[3]), // Convert Time-in
+                    row[3] ? excelTimeToJSTime(row[3]) : null, // Convert Time-in
                     row[4] ? excelTimeToJSTime(row[4]) : null, // Convert Time-out
                     row[5], // Total Hours
                     row[6], // Remarks
@@ -84,15 +84,18 @@ export function handleDtrImport() {
                     console.log(sheetData);
                     if (response.success) {
                         fetchAttendanceSummary();
-                        console.log(response.message);
-                        showToast(response.message, "success");
+                        Swal.fire("Success", response.message, "success").then(
+                            () => {
+                                location.reload();
+                            }
+                        );
                     } else {
                         console.log(sheetData);
-                        showToast(response.message, "error");
+                        Swal.fire("Failed", response.message, "error");
                     }
                 },
                 error: function () {
-                    alert("AJAX request failed!");
+                    Swal.fire("Request Error", "AJAX request failed!", "error");
                 },
             });
         }

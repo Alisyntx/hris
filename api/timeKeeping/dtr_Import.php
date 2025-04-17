@@ -2,21 +2,19 @@
 header("Content-Type: application/json");
 include '../../database/conn.php';
 
-// ✅ Set correct timezone
 date_default_timezone_set('Asia/Manila');
 
-// Check database connection
 if (!$pdo) {
+    http_response_code(500);
     die(json_encode(["success" => false, "message" => "Database connection failed"]));
 }
 
-// Retrieve JSON data from the request
 $data = json_decode($_POST['data'], true);
 
 if (!empty($data)) {
     try {
         foreach ($data as $index => $row) {
-            if ($index === 0) continue;
+            if ($index === 0) continue; // Skip headers
 
             if (count($row) >= 7 && !empty($row[0]) && !empty($row[1]) && !empty($row[2]) && !empty($row[3])) {
                 $empId = intval($row[0]);
@@ -32,17 +30,38 @@ if (!empty($data)) {
 
                 $timeIn = trim($row[3]);
                 $timeOut = trim($row[4]);
-                $remarks = trim($row[6]);
+                $remarks = isset($row[6]) ? trim($row[6]) : '';
 
-                $timeIn24 = date("H:i:s", strtotime($timeIn));
-                $timeOut24 = $timeOut ? date("H:i:s", strtotime($timeOut)) : null;
+                // Parse timeIn and timeOut
+                $parsedTimeIn = strtotime($timeIn);
+                $parsedTimeOut = $timeOut ? strtotime($timeOut) : false;
 
+                // Skip if invalid timeIn or timeOut
+                if ($parsedTimeIn === false || ($timeOut && $parsedTimeOut === false)) continue;
+
+                // Convert time to 24-hour format
+                $timeIn24 = date("H:i:s", $parsedTimeIn);
+                $timeOut24 = $parsedTimeOut ? date("H:i:s", $parsedTimeOut) : null;
+
+                // Automated remarks logic based on timeIn
+                $defaultTimeIn = strtotime('08:00:00');
+                if ($parsedTimeIn) {
+                    if ($parsedTimeIn <= $defaultTimeIn) {
+                        $remarks = 'Present';
+                    } else {
+                        $remarks = 'Late';
+                    }
+                } else {
+                    $remarks = 'Absent';
+                }
+
+                // Check if the record already exists
                 $checkStmt = $pdo->prepare("SELECT time_id, time_out FROM timekeeping WHERE time_empId = ? AND time_dateAdd = ?");
                 $checkStmt->execute([$empId, $dateAdded]);
                 $existing = $checkStmt->fetch();
 
                 if ($existing) {
-                    // Only update time_out if it was not set before and now we have a valid value
+                    // Update record if time_out is not set
                     if (!$existing['time_out'] && $timeOut24) {
                         $updateStmt = $pdo->prepare("
                             UPDATE timekeeping 
@@ -52,7 +71,7 @@ if (!empty($data)) {
                         $updateStmt->execute([$timeOut24, $remarks, $empId, $dateAdded]);
                     }
                 } else {
-                    // Insert time-in and optionally time-out
+                    // Insert new record
                     $insertStmt = $pdo->prepare("
                         INSERT INTO timekeeping (time_empId, time_empName, time_in, time_out, time_remarks, time_dateAdd) 
                         VALUES (?, ?, ?, ?, ?, ?)
@@ -68,10 +87,21 @@ if (!empty($data)) {
                 }
             }
         }
-        echo json_encode(["success" => true, "message" => "Data imported successfully!"]);
+
+        // Fetch all records after import
+        $fetchStmt = $pdo->query("SELECT * FROM timekeeping ORDER BY time_dateAdd DESC, time_id DESC");
+        $allData = $fetchStmt->fetchAll(PDO::FETCH_ASSOC);
+
+        echo json_encode([
+            "success" => true,
+            "message" => "Data imported successfully!",
+            "data" => $allData
+        ]);
     } catch (PDOException $e) {
+        http_response_code(500);
         echo json_encode(["success" => false, "message" => "Error importing data: " . $e->getMessage()]);
     }
 } else {
+    http_response_code(400);
     echo json_encode(["success" => false, "message" => "No data received"]);
 }

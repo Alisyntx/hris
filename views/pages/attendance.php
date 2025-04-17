@@ -81,15 +81,17 @@ $dtrRecords = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 </label>
                 <!-- Add New Employee Button -->
                 <a class="px-2 py-1 ml-2 font-popins text-sm rounded-sm flex items-center transition-all duration-300 ease-in-out 
-                   text-primaryclr bg-accentclr hover:text-mainclr hover:bg-primaryclr active:scale-95 active:opacity-80">
-                    <i class='bx bx-filter-alt text-xl mr-2'></i>
-                    Filter
+                   text-primaryclr bg-accentclr hover:text-mainclr hover:bg-primaryclr active:scale-95 active:opacity-80" id="downloadDTR">
+                    <i class='bx bx-download text-xl mr-2'></i>
+                    Download DTR Template
                 </a>
-                <label for="fileInput" class="cursor-pointer px-2 py-1 ml-2 font-popins text-sm rounded-sm flex items-center transition-all duration-300 ease-in-out 
+                <div class="tooltip tooltip-info tooltip-top" data-tip="Only the downloaded DTR template is accepted.">
+                    <label for="fileInput" class="cursor-pointer px-2 py-1 ml-2 font-popins text-sm rounded-sm flex items-center transition-all duration-300 ease-in-out 
                    text-primaryclr bg-accentclr hover:text-mainclr hover:bg-primaryclr active:scale-95 active:opacity-80">
-                    <i class='bx bx-upload text-xl mr-2'></i>
-                    Import
-                </label>
+                        <i class='bx bx-upload text-xl mr-2'></i>
+                        Import
+                    </label>
+                </div>
                 <input type="file" id="fileInput" accept=".xlsx,.xls" class="hidden">
                 <!-- Save Button -->
                 <button id="saveFile" class="px-2 py-1 ml-2 font-popins text-sm rounded-sm items-center transition-all duration-300 ease-in-out 
@@ -99,7 +101,8 @@ $dtrRecords = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 </button>
             </div>
             <div class="overflow-x-auto">
-                <table class="table">
+                <!-- the script of this is on ../../public/js/timeKeeping/searchInput.js -->
+                <table class="table" id="timeTable">
                     <!-- head -->
                     <thead>
                         <tr>
@@ -109,66 +112,62 @@ $dtrRecords = $stmt->fetchAll(PDO::FETCH_ASSOC);
                             <th>Out</th>
                             <th>Total Hours</th> <!-- Added this column -->
                             <th>Status</th>
-                            <th></th>
+                            <th>Action</th>
                         </tr>
                     </thead>
-                    <tbody id="dtrTable">
-                        <?php if ($dtrRecords): ?>
-                            <?php foreach ($dtrRecords as $dtr): ?>
-                                <tr>
-                                    <td>
-                                        <div class="flex items-center gap-3">
-                                            <div class="avatar">
-                                                <div class="mask mask-squircle h-12 w-12">
-                                                    <img src="http://localhost/hris/<?php echo $dtr['emp_profPic']; ?>" alt="Employee Image" />
-                                                </div>
-                                            </div>
-                                            <div>
-                                                <div class="font-bold">
-                                                    <?= htmlspecialchars($dtr['emp_fname'] . ' ' . $dtr['emp_mname'] . ' ' . $dtr['emp_lname'] . ' ' . $dtr['emp_suffix']); ?>
-                                                </div>
-                                                <div class="text-sm opacity-50"><?= htmlspecialchars($dtr['emp_position']); ?></div>
+                    <tbody id="timeTable">
+
+                        <?php foreach ($dtrRecords as $dtr): ?>
+                            <tr>
+                                <td>
+                                    <div class="flex items-center gap-3">
+                                        <div class="avatar">
+                                            <div class="mask mask-squircle h-12 w-12">
+                                                <img src="http://localhost/hris/<?php echo $dtr['emp_profPic']; ?>" alt="Employee Image" />
                                             </div>
                                         </div>
-                                    </td>
-                                    <td><?= htmlspecialchars($dtr['emp_department']); ?></td>
-                                    <td>
-                                        <?= $dtr['time_in'] ? date("g:i A", strtotime($dtr['time_in'])) : '--'; ?>
-                                    </td>
-                                    <td>
-                                        <?= $dtr['time_out'] ? date("g:i A", strtotime($dtr['time_out'])) : '--'; ?>
-                                    </td>
-                                    <td class="text-center font-semibold">
-                                        <?php
-                                        if (!empty($dtr['time_in']) && !empty($dtr['time_out'])) {
-                                            $timeIn = strtotime($dtr['time_in']);
-                                            $timeOut = strtotime($dtr['time_out']);
+                                        <div>
+                                            <div class="font-bold">
+                                                <?= htmlspecialchars($dtr['emp_fname'] . ' ' . $dtr['emp_mname'] . ' ' . $dtr['emp_lname'] . ' ' . $dtr['emp_suffix']); ?>
+                                            </div>
+                                            <div class="text-sm opacity-50"><?= htmlspecialchars($dtr['emp_position']); ?></div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td><?= htmlspecialchars($dtr['emp_department']); ?></td>
+                                <td>
+                                    <?= $dtr['time_in'] ? date("g:i A", strtotime($dtr['time_in'])) : '--'; ?>
+                                </td>
+                                <td>
+                                    <?= $dtr['time_out'] ? date("g:i A", strtotime($dtr['time_out'])) : '--'; ?>
+                                </td>
+                                <td class="text-center font-semibold">
+                                    <?php
+                                    if (!empty($dtr['time_in']) && !empty($dtr['time_out'])) {
+                                        $timeIn = strtotime($dtr['time_in']);
+                                        $timeOut = strtotime($dtr['time_out']);
 
-                                            // Ensure time_out is after time_in
-                                            if ($timeOut > $timeIn) {
-                                                $totalHours = (($timeOut - $timeIn) / 3600) - 1; // Convert seconds to hours and subtract break time
-                                                echo number_format($totalHours, 2); // Format to 2 decimal places
-                                            } else {
-                                                echo '--'; // Invalid time range
-                                            }
+                                        // Ensure time_out is after time_in
+                                        if ($timeOut > $timeIn) {
+                                            $totalHours = (($timeOut - $timeIn) / 3600) - 1; // Convert seconds to hours and subtract break time
+                                            echo number_format($totalHours, 2); // Format to 2 decimal places
                                         } else {
-                                            echo '--'; // If either time_in or time_out is missing
+                                            echo '--'; // Invalid time range
                                         }
-                                        ?>
-                                    </td>
-                                    <td><?= htmlspecialchars($dtr['time_remarks']); ?></td>
-                                    <td>
-                                        <button class="btn btn-xs btn-circle">
-                                            <i class='bx bx-edit-alt text-lg'></i>
-                                        </button>
-                                    </td>
-                                </tr>
-                            <?php endforeach; ?>
-                        <?php else: ?>
-                            <tr>
-                                <td colspan="7" class="text-center">No DTR records found for today.</td>
+                                    } else {
+                                        echo '--'; // If either time_in or time_out is missing
+                                    }
+                                    ?>
+                                </td>
+                                <td><?= htmlspecialchars($dtr['time_remarks']); ?></td>
+                                <td>
+                                    <button class="btn btn-xs btn-circle empDtrEditBtn" id="<?= $dtr['time_id']; ?>">
+                                        <i class='bx bx-edit-alt text-lg'></i>
+                                    </button>
+                                </td>
                             </tr>
-                        <?php endif; ?>
+                        <?php endforeach; ?>
+
                     </tbody>
                 </table>
             </div>
@@ -177,33 +176,3 @@ $dtrRecords = $stmt->fetchAll(PDO::FETCH_ASSOC);
 </body>
 
 </html>
-<script>
-    $(document).ready(function() {
-        $('#searchEmployee').on('keyup', function() {
-            const value = $(this).val().toLowerCase();
-
-            let matchCount = 0;
-
-            $('#dtrTable tr').each(function() {
-                const rowText = $(this).text().toLowerCase();
-                const isMatch = rowText.indexOf(value) > -1;
-                $(this).toggle(isMatch);
-
-                if (isMatch) {
-                    matchCount++;
-                }
-            });
-
-            // Remove existing "no data" row if it exists
-            $('#dtrTable .no-data-row').remove();
-
-            if (matchCount === 0) {
-                $('#dtrTable').append(`
-                    <tr class="no-data-row">
-                        <td colspan="7" class="text-center">No records found</td>
-                    </tr>
-                `);
-            }
-        });
-    });
-</script>

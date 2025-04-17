@@ -20,3 +20,7 @@
 <div id="loadEditEmp">
 
 </div>
+<!-- DTR employee edit modal -->
+<div id="loadEditEmpDtr">
+
+</div>
