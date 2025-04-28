@@ -60,7 +60,7 @@ export function handleSearchInput() {
 
         //data tables
         $("#timeTable").DataTable({
-            pageLength: 5,
+            pageLength: 8,
             lengthChange: false, // hides "Show N entries"
             ordering: true,
             searching: false, // disables the search bar

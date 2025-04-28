@@ -7,14 +7,21 @@ $query = "SELECT
             t.*, 
             e.emp_fname, e.emp_mname, e.emp_lname, e.emp_suffix, 
             e.emp_age, e.emp_gender, e.emp_address, e.emp_position, 
-            e.emp_department, e.emp_promotion, e.emp_profPic, e.emp_dateHire 
+            e.emp_department, e.emp_promotion, e.emp_profPic, e.emp_dateHire,
+            d.dept_time_in AS dept_sched_in,
+            d.dept_time_out AS dept_sched_out,
+            d.dept_break_time
           FROM timekeeping t
           INNER JOIN employee e ON t.time_empId = e.emp_id
+          LEFT JOIN departments d ON e.emp_department = d.dept_name
           WHERE t.time_dateAdd = :dateToday";
+
 $stmt = $pdo->prepare($query);
 $stmt->bindParam(':dateToday', $dateToday);
 $stmt->execute();
 $dtrRecords = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+
 ?>
 
 <!DOCTYPE html>
@@ -27,7 +34,7 @@ $dtrRecords = $stmt->fetchAll(PDO::FETCH_ASSOC);
 </head>
 
 <body>
-    <div class="w-auto h-screen rounded-sm mr-1 overflow-hidden bg-secondaryclr font-popins">
+    <div class="w-auto h-screen rounded-sm mr-1 overflow-hidden  font-popins">
         <div class="w-full flex flex-row gap-1 h-18 ">
             <div class="bg-accentclr justify-evenly h-full flex-1 rounded-sm flex p-2 flex-col items-center">
                 <div>
@@ -136,27 +143,34 @@ $dtrRecords = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                 </td>
                                 <td><?= htmlspecialchars($dtr['emp_department']); ?></td>
                                 <td>
-                                    <?= $dtr['time_in'] ? date("g:i A", strtotime($dtr['time_in'])) : '--'; ?>
+                                    <?= ($dtr['time_in'] && $dtr['time_in'] != '00:00:00') ? date("g:i A", strtotime($dtr['time_in'])) : '--'; ?>
+
                                 </td>
                                 <td>
-                                    <?= $dtr['time_out'] ? date("g:i A", strtotime($dtr['time_out'])) : '--'; ?>
+                                    <?= ($dtr['time_out'] && $dtr['time_out'] != '00:00:00') ? date("g:i A", strtotime($dtr['time_out'])) : '--'; ?>
+
                                 </td>
+
                                 <td class="text-center font-semibold">
                                     <?php
                                     if (!empty($dtr['time_in']) && !empty($dtr['time_out'])) {
                                         $timeIn = strtotime($dtr['time_in']);
                                         $timeOut = strtotime($dtr['time_out']);
 
-                                        // Ensure time_out is after time_in
                                         if ($timeOut > $timeIn) {
-                                            $totalHours = (($timeOut - $timeIn) / 3600) - 1; // Convert seconds to hours and subtract break time
-                                            echo number_format($totalHours, 2); // Format to 2 decimal places
+                                            $breakHours = isset($dtr['dept_break_time']) ? floatval($dtr['dept_break_time']) : 0;
+
+                                            $totalWorkedSeconds = $timeOut - $timeIn;
+                                            $totalHours = ($totalWorkedSeconds / 3600) - $breakHours;
+
+                                            echo number_format(max($totalHours, 0), 2); // ensure no negative
                                         } else {
-                                            echo '--'; // Invalid time range
+                                            echo '--';
                                         }
                                     } else {
-                                        echo '--'; // If either time_in or time_out is missing
+                                        echo '--';
                                     }
+
                                     ?>
                                 </td>
                                 <td><?= htmlspecialchars($dtr['time_remarks']); ?></td>

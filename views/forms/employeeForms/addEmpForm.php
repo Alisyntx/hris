@@ -1,3 +1,8 @@
+<?php
+include '../../../database/conn.php';
+$stmt = $pdo->query("SELECT dept_id, dept_name FROM departments");
+$departments = $stmt->fetchAll();
+?>
 <dialog id="addEmp" class="modal">
     <div class="modal-box font-popins">
         <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2" onclick="addEmp.close()">✕</button>
@@ -28,12 +33,30 @@
             </div>
 
             <div class="w-full flex flex-row gap-2">
-                <input type="text" placeholder="gender" name="gender" class="input input-sm w-full mt-2" />
+                <select name="gender" class="select select-sm w-full mt-2">
+                    <option disabled selected>Select Gender</option>
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                    <option value="Other">Other</option>
+                </select>
+
                 <input type="text" placeholder="age" name="age" class="input input-sm w-full mt-2" />
             </div>
             <input type="text" placeholder="address" name="address" class="input input-sm w-full mt-2" />
             <input type="text" placeholder="Position" name="position" class="input input-sm w-full mt-2" />
-            <input type="text" placeholder="Department" name="department" class="input input-sm w-full mt-2" />
+            <label class="form-control w-full max-w-xs">
+                <div class="label">
+                    <span class="label-text text-sm">Select Department</span>
+                </div>
+                <select name="department" class="select select-info w-full select-sm max-w-xs" required>
+                    <option disabled selected>Select Department</option>
+                    <?php foreach ($departments as $dept): ?>
+                        <option class="font-popins" value="<?= htmlspecialchars($dept['dept_name']) ?>">
+                            <?= htmlspecialchars($dept['dept_name']) ?>
+                        </option>
+                    <?php endforeach; ?>
+                </select>
+            </label>
 
             <label for="hire date" class="mt-2 text-xs">Hire Date</label>
             <input type="date" placeholder="hire date" name="hireDate" class="input input-sm w-full" />

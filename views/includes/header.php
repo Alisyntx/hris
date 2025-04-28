@@ -6,19 +6,7 @@ $current_page = isset($_GET['page']) ? ucfirst($_GET['page']) : 'Dashboard';
     <div class="flex items-center gap-2">
         <a class="btn btn-ghost text-xl text-primaryclr"><?= $current_page ?></a>
 
-        <!-- Attendance Dropdown (ONLY SHOWS ON ATTENDANCE PAGE) -->
-        <?php if (isset($_GET['page']) && $_GET['page'] == 'attendance'): ?>
-            <div class="dropdown">
-                <div tabindex="0" role="button" class="btn btn-ghost  hover:bg-mainclr hover:text-white text-primaryclr">
-                    Attendance ▼
-                </div>
-                <ul tabindex="0" class="menu menu-sm dropdown-content bg-base-100 rounded-box mt-3 font-popins w-52 p-2 shadow z-10">
-                    <li><a href="?page=attendance_report">Attendance Report</a></li>
-                    <li><a href="?page=absence_report">Absence Report</a></li>
-                    <li><a href="?page=overtime_request">Overtime Request</a></li>
-                </ul>
-            </div>
-        <?php endif; ?>
+
     </div>
 
     <div class="flex gap-2">

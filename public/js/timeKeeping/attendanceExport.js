@@ -1,51 +1,41 @@
 export function handleAttendanceExport() {
-    // ✅ Make sure XLSX is already imported before this (you said it is)
-    $(document).ready(function () {
-        $("#exportExcelBtn").on("click", function () {
-            // Show SweetAlert2 confirmation
-            Swal.fire({
-                title: "Export to Excel?",
-                text: "Do you want to download the attendance report?",
-                icon: "question",
-                showCancelButton: true,
-                confirmButtonText: "Yes, export it!",
-                cancelButtonText: "No",
+    $("#exportExcelBtn").on("click", function () {
+        const table = $("#tableDTR").DataTable();
 
-                padding: "1em",
-                customClass: {
-                    container: "5rem",
-                },
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    // Select table element
-                    const table = document.querySelector("table");
+        if (!table || table.rows().count() === 0) {
+            Swal.fire("Error", "No data to export!", "error");
+            return;
+        }
 
-                    // If no table data exists
-                    if (!table) {
-                        Swal.fire("Error", "No table data found!", "error");
-                        return;
-                    }
-
-                    // Convert table to Excel (XLSX)
-                    const workbook = XLSX.utils.table_to_book(table, {
-                        sheet: "Attendance",
-                    });
-
-                    // Create filename with current date
-                    const today = new Date().toISOString().split("T")[0];
-                    const filename = `Attendance_Report_${today}.xlsx`;
-
-                    // Trigger file download (this will show the Save As dialog)
-                    XLSX.writeFile(workbook, filename);
-
-                    // Show success confirmation
-                    Swal.fire(
-                        "Success",
-                        "Attendance report exported!",
-                        "success"
-                    );
-                }
-            });
+        // ✅ Get data BEFORE the Swal modal opens
+        const headers = [];
+        $("#tableDTR thead tr th").each(function () {
+            headers.push($(this).text().trim());
         });
+
+        const data = [];
+        table.rows({ search: "applied" }).every(function () {
+            const rowNodes = $(this.node()).find("td");
+            const rowData = [];
+            rowNodes.each(function () {
+                rowData.push($(this).text().trim());
+            });
+            data.push(rowData);
+        });
+
+        // 📦 Create and export Excel file
+        const worksheet = XLSX.utils.aoa_to_sheet([headers, ...data]);
+        const workbook = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(workbook, worksheet, "Attendance");
+
+        const today = new Date().toISOString().split("T")[0];
+        const filename = `Attendance_Report_${today}.xlsx`;
+
+        // ✅ Trigger export FIRST, then show success
+        XLSX.writeFile(workbook, filename);
+
+        setTimeout(() => {
+            Swal.fire("Success", "Attendance report exported!", "success");
+        }, 200); // small delay to avoid DOM conflict
     });
 }

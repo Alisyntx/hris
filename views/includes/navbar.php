@@ -38,19 +38,26 @@
                     <details open>
                         <summary class="hover:text-primaryclr hover:bg-mainclr p-2 bg-primaryclr text-accentclr"><i class='bx bx-time text-2xl'></i> Time Keeping</summary>
                         <ul>
+                            <a href="index.php?page=department"
+                                class="p-1 mt-2 rounded-sm flex items-center transition-all duration-300 ease-in-out
+          <?= $current_page == 'department' ? 'text-primaryclr bg-mainclr ' : 'text-accentclr bg-primaryclr' ?>
+          hover:text-primaryclr hover:bg-mainclr">
+                                <i class='bx bxs-book-content text-lg mr-2'></i>
+                                Departments
+                            </a>
                             <a href="index.php?page=attendance"
                                 class="p-1 mt-2 rounded-sm flex items-center transition-all duration-300 ease-in-out
           <?= $current_page == 'attendance' ? 'text-primaryclr bg-mainclr ' : 'text-accentclr bg-primaryclr' ?>
           hover:text-primaryclr hover:bg-mainclr">
                                 <i class='bx bx-calendar-check text-lg mr-2'></i>
-                                Dtr Records
+                                DTR Records
                             </a>
                             <a href="index.php?page=dtrReport"
                                 class="p-1 mt-2 rounded-sm flex items-center transition-all duration-300 ease-in-out
           <?= $current_page == 'dtrReport' ? 'text-primaryclr bg-mainclr ' : 'text-accentclr bg-primaryclr' ?>
           hover:text-primaryclr hover:bg-mainclr">
                                 <i class='bx bxs-report text-lg mr-2'></i>
-                                Dtr Reports
+                                DTR Reports
                             </a>
                         </ul>
                     </details>

@@ -9,8 +9,8 @@
 </head>
 
 <body>
-    <div class="w-auto h-screen rounded-sm mr-1 overflow-hidden bg-secondaryclr font-popins">
-        <div class="w-full h-[6%] flex gap-4 px-2 items-center rounded-md border-b-[1px] border-primaryclr ">
+    <div class="w-auto h-svh rounded-sm mr-1 overflow-hidden  font-popins">
+        <div class="w-full py-1 flex gap-4 px-2 items-center rounded-md border-b-[1px] border-primaryclr ">
             <!-- Start Date Picker -->
             <button popovertarget="cally-popover1" class="input input-border input-sm" id="cally1">
                 Pick a start date
@@ -56,8 +56,8 @@
             <button class="btn btn-primary btnFilters btn-sm flex items-center" id="exportExcelBtn">
                 <i class='bx bx-export text-xl' style='color:#ffffff'></i> Export</button>
         </div>
-        <div class="w-full px-4 mt-2">
-            <table class="table table-bordered w-full">
+        <div class="w-full h-full  px-4 mt-2 mb-2">
+            <table class="table table-bordered overflow-hidden w-full" id="tableDTR">
                 <thead>
                     <tr>
                         <th>Employee Name</th>
@@ -70,10 +70,7 @@
                     </tr>
                 </thead>
                 <tbody id="attendance-data">
-                    <!-- Filtered data will be displayed here -->
-                    <tr class='no-data-row'>
-                        <td colspan='7' class='text-center'>No records found</td>
-                    </tr>
+
                 </tbody>
             </table>
         </div>

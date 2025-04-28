@@ -25,15 +25,32 @@ function bindEditEmployeeDtr() {
                 processData: false,
                 success: function (response) {
                     if (response.status === "success") {
-                        // Close modal
-                        alert(response.message);
+                        Swal.fire({
+                            icon: "success",
+                            title: "DTR Updated!",
+                            text: response.message,
+                            confirmButtonColor: "#10b981", // Tailwind green-500
+                        }).then(() => {
+                            location.reload();
+                        });
                         dtrEmpEdit.close();
                     } else {
-                        console.error("Update failed:", response);
+                        Swal.fire({
+                            icon: "error",
+                            title: "Update Failed",
+                            text: response.message || "An error occurred.",
+                            confirmButtonColor: "#ef4444", // Tailwind red-500
+                        });
                     }
                 },
                 error: function (xhr, status, error) {
                     console.error("AJAX error:", status, error);
+                    Swal.fire({
+                        icon: "error",
+                        title: "Server Error",
+                        text: "Something went wrong while updating.",
+                        confirmButtonColor: "#ef4444",
+                    });
                 },
             });
         });

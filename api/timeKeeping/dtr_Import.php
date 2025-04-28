@@ -16,7 +16,7 @@ if (!empty($data)) {
         foreach ($data as $index => $row) {
             if ($index === 0) continue; // Skip headers
 
-            if (count($row) >= 7 && !empty($row[0]) && !empty($row[1]) && !empty($row[2]) && !empty($row[3])) {
+            if (count($row) >= 7 && !empty($row[0]) && !empty($row[1]) && !empty($row[2])) {
                 $empId = intval($row[0]);
                 $empName = trim($row[1]);
                 $dateAdded = trim($row[2]);
@@ -31,29 +31,33 @@ if (!empty($data)) {
                 $timeIn = trim($row[3]);
                 $timeOut = trim($row[4]);
                 $remarks = isset($row[6]) ? trim($row[6]) : '';
+                $lateDtrRemark = ''; // Placeholder for late DTR remark
 
-                // Parse timeIn and timeOut
-                $parsedTimeIn = strtotime($timeIn);
+                // Get today's date
+                $today = date('Y-m-d');
+
+                // Flag for late DTR upload
+                if ($dateAdded < $today) {
+                    $lateDtrRemark = "Late DTR Upload";
+                }
+
+                // Parse timeIn and timeOut safely
+                $parsedTimeIn = $timeIn ? strtotime($timeIn) : false;
                 $parsedTimeOut = $timeOut ? strtotime($timeOut) : false;
 
-                // Skip if invalid timeIn or timeOut
-                if ($parsedTimeIn === false || ($timeOut && $parsedTimeOut === false)) continue;
-
-                // Convert time to 24-hour format
-                $timeIn24 = date("H:i:s", $parsedTimeIn);
-                $timeOut24 = $parsedTimeOut ? date("H:i:s", $parsedTimeOut) : null;
-
-                // Automated remarks logic based on timeIn
+                // Default working start time
                 $defaultTimeIn = strtotime('08:00:00');
-                if ($parsedTimeIn) {
-                    if ($parsedTimeIn <= $defaultTimeIn) {
-                        $remarks = 'Present';
-                    } else {
-                        $remarks = 'Late';
-                    }
-                } else {
+
+                // Determine remarks and time values
+                if ($parsedTimeIn === false) {
                     $remarks = 'Absent';
+                    $timeIn24 = null;
+                } else {
+                    $timeIn24 = date("H:i:s", $parsedTimeIn);
+                    $remarks = ($parsedTimeIn <= $defaultTimeIn) ? 'On Time' : 'Late';
                 }
+
+                $timeOut24 = $parsedTimeOut ? date("H:i:s", $parsedTimeOut) : null;
 
                 // Check if the record already exists
                 $checkStmt = $pdo->prepare("SELECT time_id, time_out FROM timekeeping WHERE time_empId = ? AND time_dateAdd = ?");
@@ -65,16 +69,24 @@ if (!empty($data)) {
                     if (!$existing['time_out'] && $timeOut24) {
                         $updateStmt = $pdo->prepare("
                             UPDATE timekeeping 
-                            SET time_out = ?, time_remarks = ? 
+                            SET time_out = ?, time_remarks = ?, time_dtr_remark = ? 
                             WHERE time_empId = ? AND time_dateAdd = ?
                         ");
-                        $updateStmt->execute([$timeOut24, $remarks, $empId, $dateAdded]);
+                        $updateStmt->execute([$timeOut24, $remarks, $lateDtrRemark, $empId, $dateAdded]);
+                    } else {
+                        // Update remarks and late remark
+                        $updateStmt = $pdo->prepare("
+                            UPDATE timekeeping 
+                            SET time_remarks = ?, time_dtr_remark = ? 
+                            WHERE time_empId = ? AND time_dateAdd = ?
+                        ");
+                        $updateStmt->execute([$remarks, $lateDtrRemark, $empId, $dateAdded]);
                     }
                 } else {
                     // Insert new record
                     $insertStmt = $pdo->prepare("
-                        INSERT INTO timekeeping (time_empId, time_empName, time_in, time_out, time_remarks, time_dateAdd) 
-                        VALUES (?, ?, ?, ?, ?, ?)
+                        INSERT INTO timekeeping (time_empId, time_empName, time_in, time_out, time_remarks, time_dtr_remark, time_dateAdd) 
+                        VALUES (?, ?, ?, ?, ?, ?, ?)
                     ");
                     $insertStmt->execute([
                         $empId,
@@ -82,6 +94,7 @@ if (!empty($data)) {
                         $timeIn24,
                         $timeOut24,
                         $remarks,
+                        $lateDtrRemark,
                         $dateAdded
                     ]);
                 }

@@ -9,7 +9,7 @@ $query = "
     SELECT 
         SUM(CASE WHEN time_remarks LIKE '%absent%' THEN 1 ELSE 0 END) AS total_absent,
         SUM(CASE WHEN time_remarks LIKE '%late%' THEN 1 ELSE 0 END) AS total_late,
-        SUM(CASE WHEN time_remarks LIKE '%present%' THEN 1 ELSE 0 END) AS total_present
+        SUM(CASE WHEN time_remarks LIKE '%On Time%' THEN 1 ELSE 0 END) AS total_present
     FROM timekeeping
     WHERE time_dateAdd = :dateToday
 ";

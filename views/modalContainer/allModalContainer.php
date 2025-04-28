@@ -24,3 +24,11 @@
 <div id="loadEditEmpDtr">
 
 </div>
+<!-- add department modal -->
+<div id="loadAddDept">
+
+</div>
+<!-- edit department modal -->
+<div id="loadEditDept">
+
+</div>

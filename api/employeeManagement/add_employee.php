@@ -64,6 +64,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             'status' => 'success',
             'message' => 'Employee added successfully!',
             'emp_id' => $lastId,
+            'emp_fname' => $fname,
+            'emp_mname' => $mname,
+            'emp_lname' => $lname,
+            'emp_suffix' => $suffix,
+            'emp_position' => $position,
+            'emp_department' => $department,
+            'emp_promotion' => $promotion,
+            'emp_dateHire' => $date_hire,
             'profileImage' => $imagePath
         ]);
     } catch (PDOException $e) {

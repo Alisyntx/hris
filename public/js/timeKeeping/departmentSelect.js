@@ -6,9 +6,9 @@ export function handleDepartmentSelect() {
             dataType: "json",
             success: function (departments) {
                 let departmentSelect = $("#departmentSelect");
-                departmentSelect.html(
-                    `<option disabled selected>Filter by Department</option>`
-                );
+                departmentSelect.html(`
+                    <option value="" selected>All Departments</option>
+                `); // ← This is the "none" or "clear selection" option
 
                 $.each(departments, function (index, dept) {
                     departmentSelect.append(

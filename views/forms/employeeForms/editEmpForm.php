@@ -8,6 +8,8 @@ if ($empId) {
     $stmt->execute([$empId]);
     $emp = $stmt->fetch();
 }
+$stmt = $pdo->query("SELECT dept_id, dept_name FROM departments");
+$departments = $stmt->fetchAll();
 ?>
 
 <dialog id="editEmp" class="modal">
@@ -49,8 +51,23 @@ if ($empId) {
 
             <input type="text" placeholder="Address" name="address" value="<?= htmlspecialchars($emp['emp_address'] ?? '') ?>" class="input input-sm w-full mt-2" />
             <input type="text" placeholder="Position" name="position" value="<?= htmlspecialchars($emp['emp_position'] ?? '') ?>" class="input input-sm w-full mt-2" />
-            <label for="promotion" class="mt-2 text-xs">Change Department?</label>
-            <input type="text" placeholder="Department" name="department" value="<?= htmlspecialchars($emp['emp_department'] ?? '') ?>" class="input input-sm w-full" />
+
+            <label class="form-control w-full max-w-xs">
+                <div class="label">
+                    <span class="label-text text-sm">Change Department</span>
+                </div>
+                <select name="department" class="select select-info w-full select-sm max-w-xs" required>
+                    <option disabled>Select Department</option>
+                    <?php foreach ($departments as $dept): ?>
+                        <option
+                            value="<?= htmlspecialchars($dept['dept_name']) ?>"
+                            <?= isset($emp['emp_department']) && $emp['emp_department'] === $dept['dept_name'] ? 'selected' : '' ?>>
+                            <?= htmlspecialchars($dept['dept_name']) ?>
+                        </option>
+                    <?php endforeach; ?>
+                </select>
+            </label>
+
 
             <label for="hireDate" class="mt-2 text-xs">Hire Date</label>
             <input type="date" id="hireDate" name="hireDate" class="input input-sm w-full" value="<?= isset($emp['emp_dateHire']) ? date('Y-m-d', strtotime($emp['emp_dateHire'])) : '' ?>" />

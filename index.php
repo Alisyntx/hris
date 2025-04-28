@@ -35,7 +35,7 @@
                 </div>
                 <?php
                 $page = isset($_GET['page']) ? $_GET['page'] : 'dashboard';
-                $allowed_pages = ['dashboard', 'employees', 'attendance', 'dtrReport', 'reports', 'settings'];
+                $allowed_pages = ['dashboard', 'employees', 'attendance', 'dtrReport', 'reports', 'settings', 'department'];
 
                 if (in_array($page, $allowed_pages)) {
                     include "views/pages/$page.php";
