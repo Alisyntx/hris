@@ -61,18 +61,19 @@ export function handleDtrImport() {
         function formatSheetData(sheetData) {
             return sheetData.map((row, index) => {
                 if (index === 0) return row; // Keep headers as is
-                console.log("Raw Excel Date:", row[2]);
+                console.log(sheetData);
                 return [
                     row[0], // Employee ID
                     row[1], // Employee Name
-                    excelDateToJSDate(row[2]), // Convert Date
-                    row[3] ? excelTimeToJSTime(row[3]) : null, // Convert Time-in
-                    row[4] ? excelTimeToJSTime(row[4]) : null, // Convert Time-out
-                    row[5], // Total Hours
-                    row[6], // Remarks
+                    excelDateToJSDate(row[2]), // Date
+                    row[3] ? excelTimeToJSTime(row[3]) : null, // AM Time In
+                    row[4] ? excelTimeToJSTime(row[4]) : null, // AM Time Out
+                    row[5] ? excelTimeToJSTime(row[5]) : null, // PM Time In
+                    row[6] ? excelTimeToJSTime(row[6]) : null, // PM Time Out
                 ];
             });
         }
+
         // Send formatted data to the server
         function sendDataToServer(sheetData) {
             $.ajax({

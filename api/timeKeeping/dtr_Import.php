@@ -28,72 +28,96 @@ if (!empty($data)) {
                     $dateAdded = date('Y-m-d', strtotime("1899-12-30 +$dateAdded days"));
                 }
 
-                $timeIn = trim($row[3]);
-                $timeOut = trim($row[4]);
-                $remarks = isset($row[6]) ? trim($row[6]) : '';
-                $lateDtrRemark = ''; // Placeholder for late DTR remark
+                // Time fields (AM and PM)
+                $timeIn = trim($row[3]); // AM Time In
+                $timeOut = trim($row[4]); // AM Time Out
+
+                // PM times
+                $pmTimeIn = trim($row[5]); // PM Time In
+                $pmTimeOut = isset($row[6]) ? trim($row[6]) : ''; // PM Time Out
 
                 // Get today's date
                 $today = date('Y-m-d');
 
                 // Flag for late DTR upload
+                $lateDtrRemark = '';
                 if ($dateAdded < $today) {
                     $lateDtrRemark = "Late DTR Upload";
                 }
 
-                // Parse timeIn and timeOut safely
+                // Parse AM timeIn and timeOut safely
                 $parsedTimeIn = $timeIn ? strtotime($timeIn) : false;
                 $parsedTimeOut = $timeOut ? strtotime($timeOut) : false;
 
-                // Default working start time
+                // Default working start time for AM (e.g., 8:00 AM)
                 $defaultTimeIn = strtotime('08:00:00');
 
-                // Determine remarks and time values
+                // Determine AM remarks and time values
                 if ($parsedTimeIn === false) {
-                    $remarks = 'Absent';
+                    $amRemarks = 'Absent';
                     $timeIn24 = null;
                 } else {
                     $timeIn24 = date("H:i:s", $parsedTimeIn);
-                    $remarks = ($parsedTimeIn <= $defaultTimeIn) ? 'On Time' : 'Late';
+                    $amRemarks = ($parsedTimeIn <= $defaultTimeIn) ? 'On Time' : 'Late';
+                }
+
+                // Parse PM timeIn and timeOut safely
+                $parsedPmTimeIn = $pmTimeIn ? strtotime($pmTimeIn) : false;
+                $parsedPmTimeOut = $pmTimeOut ? strtotime($pmTimeOut) : false;
+
+                // Default working start time for PM (e.g., 1:00 PM)
+                $defaultPmTimeIn = strtotime('13:00:00');
+
+                $pmRemarks = '';
+                if ($parsedPmTimeIn === false) {
+                    $pmRemarks = 'Absent';
+                    $pmTimeIn24 = null;
+                } else {
+                    $pmTimeIn24 = date("H:i:s", $parsedPmTimeIn);
+                    $pmRemarks = ($parsedPmTimeIn <= $defaultPmTimeIn) ? 'On Time' : 'Late';
                 }
 
                 $timeOut24 = $parsedTimeOut ? date("H:i:s", $parsedTimeOut) : null;
+                $pmTimeOut24 = $parsedPmTimeOut ? date("H:i:s", $parsedPmTimeOut) : null;
 
                 // Check if the record already exists
-                $checkStmt = $pdo->prepare("SELECT time_id, time_out FROM timekeeping WHERE time_empId = ? AND time_dateAdd = ?");
+                $checkStmt = $pdo->prepare("SELECT time_id, am_time_out, pm_time_out FROM timekeeping WHERE time_empId = ? AND time_dateAdd = ?");
                 $checkStmt->execute([$empId, $dateAdded]);
                 $existing = $checkStmt->fetch();
 
                 if ($existing) {
-                    // Update record if time_out is not set
-                    if (!$existing['time_out'] && $timeOut24) {
+                    // Update record if PM time_out or AM time_out is not set
+                    if ((!$existing['am_time_out'] && $timeOut24) || (!$existing['pm_time_out'] && $pmTimeOut24)) {
                         $updateStmt = $pdo->prepare("
                             UPDATE timekeeping 
-                            SET time_out = ?, time_remarks = ?, time_dtr_remark = ? 
+                            SET am_time_out = ?, pm_time_in = ?, pm_time_out = ?, am_time_remarks = ?, pm_time_remarks = ?, time_dtr_remark = ? 
                             WHERE time_empId = ? AND time_dateAdd = ?
                         ");
-                        $updateStmt->execute([$timeOut24, $remarks, $lateDtrRemark, $empId, $dateAdded]);
+                        $updateStmt->execute([$timeOut24, $pmTimeIn24, $pmTimeOut24, $amRemarks, $pmRemarks, $lateDtrRemark, $empId, $dateAdded]);
                     } else {
-                        // Update remarks and late remark
+                        // Update remarks and late remark if time_out is already set
                         $updateStmt = $pdo->prepare("
                             UPDATE timekeeping 
-                            SET time_remarks = ?, time_dtr_remark = ? 
+                            SET am_time_remarks = ?, pm_time_remarks = ?, time_dtr_remark = ? 
                             WHERE time_empId = ? AND time_dateAdd = ?
                         ");
-                        $updateStmt->execute([$remarks, $lateDtrRemark, $empId, $dateAdded]);
+                        $updateStmt->execute([$amRemarks, $pmRemarks, $lateDtrRemark, $empId, $dateAdded]);
                     }
                 } else {
                     // Insert new record
                     $insertStmt = $pdo->prepare("
-                        INSERT INTO timekeeping (time_empId, time_empName, time_in, time_out, time_remarks, time_dtr_remark, time_dateAdd) 
-                        VALUES (?, ?, ?, ?, ?, ?, ?)
+                        INSERT INTO timekeeping (time_empId, time_empName, am_time_in, am_time_out, pm_time_in, pm_time_out, am_time_remarks, pm_time_remarks, time_dtr_remark, time_dateAdd) 
+                        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
                     ");
                     $insertStmt->execute([
                         $empId,
                         $empName,
                         $timeIn24,
                         $timeOut24,
-                        $remarks,
+                        $pmTimeIn24,
+                        $pmTimeOut24,
+                        $amRemarks,
+                        $pmRemarks,
                         $lateDtrRemark,
                         $dateAdded
                     ]);

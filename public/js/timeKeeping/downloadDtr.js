@@ -1,13 +1,11 @@
 export function handleDownloadDtr() {
     $(document).ready(function () {
-        // Add click event listener to the button
         $("#downloadDTR").click(function () {
             $.ajax({
                 url: "api/timeKeeping/get_employee.php",
                 method: "GET",
                 dataType: "json",
                 success: function (employees) {
-                    // Fix timezone issue by creating a local date at midnight (no time shift)
                     const now = new Date();
                     const today = new Date(
                         now.getFullYear(),
@@ -22,22 +20,36 @@ export function handleDownloadDtr() {
                         return {
                             "Employee ID": emp.emp_id,
                             "Employee Name": fullName,
-                            Date: today, // Use fixed local date object
-                            "Time-in": "",
-                            "Time-out": "",
+                            Date: today,
+                            "Am In": null,
+                            "Am Out": null,
+                            "Pm In": null,
+                            "Pm Out": null,
+                            Remarks: "",
                         };
                     });
 
-                    // Create worksheet
                     const worksheet = XLSX.utils.json_to_sheet(dtrTemplate);
 
-                    // Optional: apply Excel date format to first date cell
-                    const dateCell = worksheet["C2"]; // "C2" is usually the first date cell
-                    if (dateCell) {
-                        dateCell.z = XLSX.SSF._table[14]; // Apply Excel date format "m/d/yy"
+                    // Format Date column ("C")
+                    for (let row = 2; row <= employees.length + 1; row++) {
+                        const cellRef = "C" + row;
+                        if (worksheet[cellRef]) {
+                            worksheet[cellRef].z = "mm/dd/yyyy";
+                        }
                     }
 
-                    // Create and append to workbook
+                    // Pre-format time columns: D (Am In), E (Am Out), F (Pm In), G (Pm Out)
+                    const timeCols = ["D", "E", "F", "G"];
+                    timeCols.forEach((col) => {
+                        for (let row = 2; row <= employees.length + 1; row++) {
+                            const cellRef = col + row;
+                            if (!worksheet[cellRef])
+                                worksheet[cellRef] = { t: "n", v: null };
+                            worksheet[cellRef].z = "h:mm AM/PM";
+                        }
+                    });
+
                     const workbook = XLSX.utils.book_new();
                     XLSX.utils.book_append_sheet(
                         workbook,
@@ -45,15 +57,11 @@ export function handleDownloadDtr() {
                         "DTR Template"
                     );
 
-                    // Format file name based on local date
                     const fileDate = `${
                         today.getMonth() + 1
                     }-${today.getDate()}-${today.getFullYear()}`;
-
-                    // Trigger Excel download
                     XLSX.writeFile(workbook, `dtr_template_${fileDate}.xlsx`);
 
-                    // Show success alert
                     Swal.fire({
                         title: "Download Complete!",
                         text: `DTR Template for ${fileDate} has been successfully downloaded.`,

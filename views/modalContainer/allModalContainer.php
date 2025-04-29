@@ -32,3 +32,7 @@
 <div id="loadEditDept">
 
 </div>
+<!-- add Overtime Request -->
+<div id="loadAddReq">
+
+</div>

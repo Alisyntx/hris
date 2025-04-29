@@ -59,6 +59,14 @@
                                 <i class='bx bxs-report text-lg mr-2'></i>
                                 DTR Reports
                             </a>
+                            <a href="index.php?page=overtimeRequest"
+                                class="p-1 mt-2 rounded-sm flex items-center transition-all duration-300 ease-in-out
+          <?= $current_page == 'overtimeRequest' ? 'text-primaryclr bg-mainclr ' : 'text-accentclr bg-primaryclr' ?>
+          hover:text-primaryclr hover:bg-mainclr">
+                                <i class='bx bxs-time-five text-lg mr-2'></i>
+
+                                Overtime Request
+                            </a>
                         </ul>
                     </details>
 
