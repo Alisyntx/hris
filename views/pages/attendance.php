@@ -115,15 +115,14 @@ $dtrRecords = $stmt->fetchAll(PDO::FETCH_ASSOC);
                         <tr>
                             <th>Name</th>
                             <th>Department</th>
-                            <th>In</th>
-                            <th>Out</th>
+                            <th>Am</th>
+                            <th>Pm</th>
                             <th>Total Hours</th> <!-- Added this column -->
-                            <th>Status</th>
+                            <th>Remarks</th>
                             <th>Action</th>
                         </tr>
                     </thead>
                     <tbody id="timeTable">
-
                         <?php foreach ($dtrRecords as $dtr): ?>
                             <tr>
                                 <td>
@@ -142,38 +141,65 @@ $dtrRecords = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                     </div>
                                 </td>
                                 <td><?= htmlspecialchars($dtr['emp_department']); ?></td>
+
+                                <!-- AM Column -->
                                 <td>
-                                    <?= ($dtr['time_in'] && $dtr['time_in'] != '00:00:00') ? date("g:i A", strtotime($dtr['time_in'])) : '--'; ?>
+                                    <div class="flex flex-col">
+                                        <span>Time In: <?= ($dtr['am_time_in'] && $dtr['am_time_in'] != '00:00:00') ? date("g:i A", strtotime($dtr['am_time_in'])) : '--'; ?> </span>
+                                        <span>Time Out: <?= ($dtr['am_time_out'] && $dtr['am_time_out'] != '00:00:00') ? date("g:i A", strtotime($dtr['am_time_out'])) : '--'; ?></span>
 
+                                    </div>
                                 </td>
+
+                                <!-- PM Column -->
                                 <td>
-                                    <?= ($dtr['time_out'] && $dtr['time_out'] != '00:00:00') ? date("g:i A", strtotime($dtr['time_out'])) : '--'; ?>
+                                    <div class="flex flex-col">
+                                        <span>Time In: <?= ($dtr['pm_time_in'] && $dtr['pm_time_in'] != '00:00:00') ? date("g:i A", strtotime($dtr['pm_time_in'])) : '--'; ?> </span>
+                                        <span>Time Out: <?= ($dtr['pm_time_out'] && $dtr['pm_time_out'] != '00:00:00') ? date("g:i A", strtotime($dtr['pm_time_out'])) : '--'; ?></span>
 
+                                    </div>
                                 </td>
 
+                                <!-- Total Hours -->
                                 <td class="text-center font-semibold">
                                     <?php
-                                    if (!empty($dtr['time_in']) && !empty($dtr['time_out'])) {
-                                        $timeIn = strtotime($dtr['time_in']);
-                                        $timeOut = strtotime($dtr['time_out']);
-
-                                        if ($timeOut > $timeIn) {
-                                            $breakHours = isset($dtr['dept_break_time']) ? floatval($dtr['dept_break_time']) : 0;
-
-                                            $totalWorkedSeconds = $timeOut - $timeIn;
-                                            $totalHours = ($totalWorkedSeconds / 3600) - $breakHours;
-
-                                            echo number_format(max($totalHours, 0), 2); // ensure no negative
-                                        } else {
-                                            echo '--';
+                                    $totalSeconds = 0;
+                                    if (!empty($dtr['am_time_in']) && !empty($dtr['am_time_out'])) {
+                                        $amIn = strtotime($dtr['am_time_in']);
+                                        $amOut = strtotime($dtr['am_time_out']);
+                                        if ($amOut > $amIn) {
+                                            $totalSeconds += ($amOut - $amIn);
                                         }
-                                    } else {
-                                        echo '--';
                                     }
+                                    if (!empty($dtr['pm_time_in']) && !empty($dtr['pm_time_out'])) {
+                                        $pmIn = strtotime($dtr['pm_time_in']);
+                                        $pmOut = strtotime($dtr['pm_time_out']);
+                                        if ($pmOut > $pmIn) {
+                                            $totalSeconds += ($pmOut - $pmIn);
+                                        }
+                                    }
+                                    $breakHours = isset($dtr['dept_break_time']) ? floatval($dtr['dept_break_time']) : 0;
+                                    $totalHours = ($totalSeconds / 3600) - $breakHours;
 
+                                    echo ($totalHours > 0) ? number_format($totalHours, 2) : '--';
                                     ?>
                                 </td>
-                                <td><?= htmlspecialchars($dtr['time_remarks']); ?></td>
+
+                                <!-- Status -->
+                                <td>
+                                    <div class="flex flex-col">
+                                        <span class="flex items-center">
+                                            <div class="badge-xs badge badge-outline badge-warning mr-1">am </div>
+                                            <?= htmlspecialchars($dtr['am_time_remarks'] ?? '--') ?>
+                                        </span>
+                                        <span>
+                                            <div class="badge-xs badge badge-outline badge-error ">pm</div>
+                                            <?= htmlspecialchars($dtr['pm_time_remarks'] ?? '--') ?>
+                                        </span>
+                                    </div>
+                                </td>
+
+                                <!-- Action -->
                                 <td>
                                     <button class="btn btn-xs btn-circle empDtrEditBtn" id="<?= $dtr['time_id']; ?>">
                                         <i class='bx bx-edit-alt text-lg'></i>
@@ -181,8 +207,8 @@ $dtrRecords = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                 </td>
                             </tr>
                         <?php endforeach; ?>
-
                     </tbody>
+
                 </table>
             </div>
         </div>
