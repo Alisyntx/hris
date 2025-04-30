@@ -37,22 +37,55 @@ $dtrRecords = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <div class="w-auto h-screen rounded-sm mr-1 overflow-hidden  font-popins">
         <div class="w-full flex flex-row gap-1 h-18 ">
             <div class="bg-accentclr justify-evenly h-full flex-1 rounded-sm flex p-2 flex-col items-center">
-                <div>
-                    <div class="text-xl font-bold text-primaryclr px-10 text-center" id="totalPresent">0</div>
+                <div class="flex gap-2">
+                    <div class="text-xl font-bold flex items-center gap-1 text-primaryclr text-center">
+                        <span class="text-sm font-light">am</span>
+                        <div class="w-px h-5 bg-primaryclr"></div>
+                        <span id="presentAM">0</span>
+                    </div>
+                    <div class="text-xl font-bold flex items-center gap-1 text-primaryclr text-center">
+                        <span class="text-sm font-light">pm</span>
+                        <div class="w-px h-5 bg-primaryclr"></div>
+                        <span id="presentPM">0</span>
+                    </div>
                 </div>
                 <div class="w-full h-[1px] bg-primaryclr"></div>
                 <div class="text-md text-primaryclr px-10">Present</div>
             </div>
+            <!-- late -->
             <div class="bg-accentclr h-full flex-1 rounded-sm">
                 <div class="bg-accentclr justify-evenly h-full flex-1 rounded-sm flex p-2 flex-col items-center">
-                    <div class="text-xl font-bold text-primaryclr px-10 text-center" id="totalLate">0</div>
+                    <div class="flex gap-2">
+                        <div class="text-xl font-bold flex items-center gap-1 text-primaryclr text-center">
+                            <span class="text-sm font-light">am</span>
+                            <div class="w-px h-5 bg-primaryclr"></div>
+                            <span id="lateAM">0</span>
+                        </div>
+                        <div class="text-xl font-bold flex items-center gap-1 text-primaryclr text-center">
+                            <span class="text-sm font-light">pm</span>
+                            <div class="w-px h-5 bg-primaryclr"></div>
+                            <span id="latePM">0</span>
+                        </div>
+                    </div>
                     <div class="w-full h-[1px] bg-primaryclr"></div>
                     <div class="text-md text-primaryclr px-10">Late</div>
                 </div>
             </div>
+            <!-- absent -->
             <div class="bg-accentclr h-full w-1/6 rounded-sm">
                 <div class="bg-accentclr justify-evenly h-full flex-1 rounded-sm flex p-2 flex-col items-center">
-                    <div class="text-xl font-bold text-primaryclr px-10 text-center" id="totalAbsent">0</div>
+                    <div class="flex gap-2">
+                        <div class="text-xl font-bold flex items-center gap-1 text-primaryclr text-center">
+                            <span class="text-sm font-light">am</span>
+                            <div class="w-px h-5 bg-primaryclr"></div>
+                            <span id="absentAM">0</span>
+                        </div>
+                        <div class="text-xl font-bold flex items-center gap-1 text-primaryclr text-center">
+                            <span class="text-sm font-light">pm</span>
+                            <div class="w-px h-5 bg-primaryclr"></div>
+                            <span id="absentPM">0</span>
+                        </div>
+                    </div>
                     <div class="w-full h-[1px] bg-primaryclr"></div>
                     <div class="text-md text-primaryclr px-10">Absent</div>
                 </div>

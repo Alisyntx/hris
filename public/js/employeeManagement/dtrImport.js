@@ -127,10 +127,12 @@ function fetchAttendanceSummary() {
         dataType: "json",
         success: function (response) {
             if (response.success) {
-                // ✅ Update UI with new attendance summary
-                $("#totalAbsent").text(response.data.total_absent);
-                $("#totalLate").text(response.data.total_late);
-                $("#totalPresent").text(response.data.total_present);
+                $("#presentAM").text(response.data.present_am);
+                $("#presentPM").text(response.data.present_pm);
+                $("#absentAM").text(response.data.absent_am);
+                $("#absentPM").text(response.data.absent_pm);
+                $("#lateAM").text(response.data.late_am);
+                $("#latePM").text(response.data.late_pm);
             } else {
                 showToast("Failed to fetch summary!", "error");
             }
