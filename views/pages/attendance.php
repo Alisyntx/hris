@@ -50,7 +50,7 @@ $dtrRecords = $stmt->fetchAll(PDO::FETCH_ASSOC);
                     </div>
                 </div>
                 <div class="w-full h-[1px] bg-primaryclr"></div>
-                <div class="text-md text-primaryclr px-10">Present</div>
+                <div class="text-md text-primaryclr px-10">On Time</div>
             </div>
             <!-- late -->
             <div class="bg-accentclr h-full flex-1 rounded-sm">

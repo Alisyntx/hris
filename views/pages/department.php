@@ -8,8 +8,8 @@
             <thead>
                 <tr>
                     <th>Department</th>
-                    <th>Time In</th>
-                    <th>Time Out </th>
+                    <th>Am</th>
+                    <th>Pm</th>
                     <th>Break time</th>
                     <th>Action</th>
                 </tr>

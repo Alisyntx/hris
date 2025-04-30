@@ -3,17 +3,14 @@ header("Content-Type: application/json");
 include '../../database/conn.php';
 
 try {
-    $stmt = $pdo->query("SELECT dept_id, dept_name, dept_time_in, dept_time_out, dept_break_time FROM departments");
+    $stmt = $pdo->query("SELECT dept_id, dept_name, dept_amtime_in, dept_amtime_out, dept_pmtime_in, dept_pmtime_out, dept_break_time FROM departments");
     $departments = $stmt->fetchAll();
 
-    // Convert break time from hours (decimal) to a readable format
+    // Convert break time from decimal to formatted string
     foreach ($departments as &$department) {
-        // Convert dept_break_time from decimal hours to hours and minutes
         $decimalTime = $department['dept_break_time'];
-        $hours = floor($decimalTime);  // Get whole hours
-        $minutes = round(($decimalTime - $hours) * 60);  // Get remaining minutes from decimal part
-
-        // Format the time as "X hours Y minutes"
+        $hours = floor($decimalTime);
+        $minutes = round(($decimalTime - $hours) * 60);
         $department['dept_break_time_formatted'] = "{$hours} hour(s) {$minutes} minute(s)";
     }
 

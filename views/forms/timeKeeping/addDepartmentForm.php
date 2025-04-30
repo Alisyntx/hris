@@ -6,12 +6,17 @@
             <div class="w-full flex flex-col mt-2">
                 <label class="text-sm flex items-center font-medium text-gray-600">Department Name</label>
                 <input name="dept_name" required class="p-2 text-sm bg-gray-100 border border-gray-300 rounded-md mt-1" />
+                <label class="text-sm flex items-center font-medium text-gray-600 mt-2">AM Time-In/Time-Out <i class='ml-1 bx bx-time'></i></label>
+                <div class="flex w-full gap-1">
+                    <input type="time" name="dept_amtime_in" required class="w-full p-2 text-sm bg-gray-100 border border-gray-300 rounded-md mt-1" />
+                    <input type="time" name="dept_amtime_out" required class="w-full p-2 text-sm bg-gray-100 border border-gray-300 rounded-md mt-1" />
+                </div>
+                <label class="text-sm flex items-center font-medium text-gray-600 mt-2">PM Time-In/Time-Out <i class='ml-1 bx bx-time'></i></label>
+                <div class="flex w-full gap-1">
+                    <input type="time" name="dept_pmtime_in" required class="w-full p-2 text-sm bg-gray-100 border border-gray-300 rounded-md mt-1" />
+                    <input type="time" name="dept_pmtime_out" required class="w-full p-2 text-sm bg-gray-100 border border-gray-300 rounded-md mt-1" />
+                </div>
 
-                <label class="text-sm flex items-center font-medium text-gray-600 mt-2">Time In <i class='ml-1 bx bx-time'></i></label>
-                <input type="time" name="dept_time_in" required class="p-2 text-sm bg-gray-100 border border-gray-300 rounded-md mt-1" />
-
-                <label class="text-sm flex font-medium text-gray-600 items-center mt-2">Time Out <i class=' ml-1 bx bx-time'></i></label>
-                <input type="time" name="dept_time_out" required class="p-2 text-sm bg-gray-100 border border-gray-300 rounded-md mt-1" />
 
                 <label class="text-sm flex font-medium text-gray-600 items-center mt-2">Break Duration (in hours) <i class='ml-1 bx bx-time'></i></label>
                 <input

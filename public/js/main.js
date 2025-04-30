@@ -31,7 +31,7 @@ $(document).ready(function () {
 
     $(document).ready(function () {
         $(".btnFilters").on("click", function () {
-            handleAttendanceReport(); // 🔥 Called ONLY when button clicked
+            handleAttendanceReport();
         });
     });
 });

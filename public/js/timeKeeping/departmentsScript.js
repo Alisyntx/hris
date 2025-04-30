@@ -124,21 +124,38 @@ function fetchDepartments() {
             if (response.status === "success") {
                 let rows = "";
                 response.data.forEach((dept) => {
+                    // Format break duration (e.g., 1.5 → "1 hr 30 mins")
+                    const breakHours = Math.floor(dept.dept_break_time);
+                    const breakMinutes = Math.round(
+                        (dept.dept_break_time - breakHours) * 60
+                    );
+                    const breakTimeFormatted = `${
+                        breakHours > 0 ? breakHours + " hr" : ""
+                    }${
+                        breakMinutes > 0 ? " " + breakMinutes + " mins" : ""
+                    }`.trim();
+
                     rows += `
                         <tr class="hover:bg-base-300">
-                            <td>${dept.dept_name}</td>
-                            <td>${formatTime(dept.dept_time_in)}</td>
-                            <td>${formatTime(dept.dept_time_out)}</td>
-                            <td>${dept.dept_break_time_formatted}</td>
+                            <td class="font-medium">${dept.dept_name}</td>
                             <td>
-                                <button class="text-mainclr btn btn-ghost btn-sm btn-circle editDeptBtn" id="${
-                                    dept.dept_id
-                                }">
+                                <div class="text-xs leading-tight">
+                                    <div><b>AM In:</b> ${dept.dept_amtime_in}</div>
+                                    <div><b>AM Out:</b> ${dept.dept_amtime_out}</div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="text-xs leading-tight">
+                                    <div><b>PM In:</b> ${dept.dept_pmtime_in}</div>
+                                    <div><b>PM Out:</b> ${dept.dept_pmtime_out}</div>
+                                </div>
+                            </td>
+                            <td class="text-xs">${breakTimeFormatted}</td>
+                            <td>
+                                <button class="text-mainclr btn btn-ghost btn-sm btn-circle editDeptBtn" id="${dept.dept_id}">
                                     <i class='bx bxs-edit-alt text-lg'></i>
                                 </button>
-                                <button class="text-mainclr btn btn-ghost btn-sm btn-circle deleteDeptBtn" id="${
-                                    dept.dept_id
-                                }">
+                                <button class="text-mainclr btn btn-ghost btn-sm btn-circle deleteDeptBtn" id="${dept.dept_id}">
                                     <i class='bx bx-trash text-lg'></i>
                                 </button>
                             </td>
