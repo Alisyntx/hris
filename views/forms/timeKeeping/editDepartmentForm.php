@@ -22,15 +22,28 @@ if ($deptId) {
                     value="<?= htmlspecialchars($deptData['dept_name'] ?? '') ?>"
                     class="p-2 text-sm bg-gray-100 border border-gray-300 rounded-md mt-1" />
 
-                <label class="text-sm flex items-center font-medium text-gray-600 mt-2">Time In <i class='ml-1 bx bx-time'></i></label>
-                <input type="time" name="dept_time_in" required
-                    value="<?= $deptData['dept_time_in'] ?? '' ?>"
-                    class="p-2 text-sm bg-gray-100 border border-gray-300 rounded-md mt-1" />
+                <label class="text-sm flex items-center font-medium text-gray-600 mt-2">AM Time-In/Time-Out</label>
+                <div class="flex w-full gap-1">
+                    <input type="time" name="dept_amtime_in" required
+                        value="<?= htmlspecialchars($deptData['dept_amtime_in'] ?? '') ?>"
+                        class="w-full p-2 text-sm bg-gray-100 border border-gray-300 rounded-md mt-1" />
 
-                <label class="text-sm flex font-medium text-gray-600 items-center mt-2">Time Out <i class=' ml-1 bx bx-time'></i></label>
-                <input type="time" name="dept_time_out" required
-                    value="<?= $deptData['dept_time_out'] ?? '' ?>"
-                    class="p-2 text-sm bg-gray-100 border border-gray-300 rounded-md mt-1" />
+                    <input type="time" name="dept_amtime_out" required
+                        value="<?= htmlspecialchars($deptData['dept_amtime_out'] ?? '') ?>"
+                        class="w-full p-2 text-sm bg-gray-100 border border-gray-300 rounded-md mt-1" />
+                </div>
+
+                <label class="text-sm flex items-center font-medium text-gray-600 mt-2">PM Time-In/Time-Out</label>
+                <div class="flex w-full gap-1">
+                    <input type="time" name="dept_pmtime_in" required
+                        value="<?= htmlspecialchars($deptData['dept_pmtime_in'] ?? '') ?>"
+                        class="w-full p-2 text-sm bg-gray-100 border border-gray-300 rounded-md mt-1" />
+
+                    <input type="time" name="dept_pmtime_out" required
+                        value="<?= htmlspecialchars($deptData['dept_pmtime_out'] ?? '') ?>"
+                        class="w-full p-2 text-sm bg-gray-100 border border-gray-300 rounded-md mt-1" />
+                </div>
+
 
                 <label class="text-sm flex font-medium text-gray-600 items-center mt-2">Break Duration (in hours) <i class='ml-1 bx bx-time'></i></label>
                 <input

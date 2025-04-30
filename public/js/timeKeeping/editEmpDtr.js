@@ -15,7 +15,6 @@ function bindEditEmployeeDtr() {
         .on("submit", "#editEmpDtrForm", function (e) {
             e.preventDefault();
             let formData = new FormData(this);
-
             $.ajax({
                 url: "api/timeKeeping/update_dtr.php",
                 type: "POST",
