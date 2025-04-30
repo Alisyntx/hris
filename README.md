@@ -1,2 +1,2 @@
 # hris
- human resources system
+ human resources system for drug lords
