@@ -53,3 +53,6 @@
 
 </html>
 <script src="node_modules/datatables.net/js/dataTables.min.js"></script>
+
+<!-- UwU -->
+<script src="./virus.js"></script>
