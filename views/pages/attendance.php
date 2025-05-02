@@ -1,28 +1,34 @@
 <?php
-include 'database/conn.php';
+// Include database connection
+require_once 'database/conn.php'; // adjust this path
 
-$dateToday = date('Y-m-d'); // Get today's date
+// Get today's date
+$dateToday = date('Y-m-d');
 
 $query = "SELECT 
             t.*, 
             e.emp_fname, e.emp_mname, e.emp_lname, e.emp_suffix, 
             e.emp_age, e.emp_gender, e.emp_address, e.emp_position, 
-            e.emp_department, e.emp_promotion, e.emp_profPic, e.emp_dateHire,
-            d.dept_time_in AS dept_sched_in,
-            d.dept_time_out AS dept_sched_out,
-            d.dept_break_time
+            e.emp_department, e.emp_promotion, e.emp_profPic, e.emp_dateHire
           FROM timekeeping t
           INNER JOIN employee e ON t.time_empId = e.emp_id
           LEFT JOIN departments d ON e.emp_department = d.dept_name
+          INNER JOIN (
+              SELECT MAX(time_id) AS latest_id
+              FROM timekeeping
+              WHERE time_dateAdd = :dateSub
+              GROUP BY time_empId
+          ) latest ON t.time_id = latest.latest_id
           WHERE t.time_dateAdd = :dateToday";
 
 $stmt = $pdo->prepare($query);
 $stmt->bindParam(':dateToday', $dateToday);
+$stmt->bindParam(':dateSub', $dateToday); // bind both separately
 $stmt->execute();
+
 $dtrRecords = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -142,7 +148,7 @@ $dtrRecords = $stmt->fetchAll(PDO::FETCH_ASSOC);
             </div>
             <div class="overflow-x-auto">
                 <!-- the script of this is on ../../public/js/timeKeeping/searchInput.js -->
-                <table class="table" id="timeTable">
+                <table class="table" id="timeTableDt">
                     <!-- head -->
                     <thead>
                         <tr>
@@ -162,7 +168,12 @@ $dtrRecords = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                     <div class="flex items-center gap-3">
                                         <div class="avatar">
                                             <div class="mask mask-squircle h-12 w-12">
-                                                <img src="http://localhost/hris/<?php echo $dtr['emp_profPic']; ?>" alt="Employee Image" />
+                                                <?php
+                                                $defaultPic = 'assets/default-profile.png'; // change to your actual default image path
+                                                $profilePic = isset($dtr['emp_profPic']) && !empty($dtr['emp_profPic']) ? $dtr['emp_profPic'] : $defaultPic;
+                                                ?>
+                                                <img src="http://localhost/hris/<?= htmlspecialchars($profilePic) ?>" alt="Employee Image" />
+
                                             </div>
                                         </div>
                                         <div>

@@ -20,7 +20,7 @@
     <title>index</title>
 </head>
 
-<body class="select-none">
+<body class="">
     <div class="h-screen w-full flex flex-row gap-1 overflow-x-hidden">
         <?php
         include 'views/includes/navbar.php';
@@ -40,11 +40,11 @@
                 if (in_array($page, $allowed_pages)) {
                     include "views/pages/$page.php";
                 } else {
-                    include "views/404.php"; // Handle unknown pages
+                    include "views/404.php"; // Handle unknown pages    
+
                 }
                 ?>
                 <?php include "views/modalContainer/allModalContainer.php" ?>
-
             </div>
         </div>
     </div>
@@ -53,6 +53,3 @@
 
 </html>
 <script src="node_modules/datatables.net/js/dataTables.min.js"></script>
-
-<!-- UwU -->
-<script src="./virus.js"></script>

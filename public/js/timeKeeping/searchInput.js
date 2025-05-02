@@ -59,7 +59,7 @@ export function handleSearchInput() {
         });
 
         //data tables
-        $("#timeTable").DataTable({
+        $("#timeTableDt").DataTable({
             pageLength: 8,
             lengthChange: false, // hides "Show N entries"
             ordering: true,
