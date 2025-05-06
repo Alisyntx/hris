@@ -78,10 +78,23 @@ if (!empty($data)) {
                     $timeIn24 = date("H:i:s", $parsedAmIn);
                     $amRemarks = ($parsedAmIn <= $expectedAmIn) ? "On Time" : "Late";
                     $timeOut24 = $parsedAmOut ? date("H:i:s", $parsedAmOut) : null;
+
+                    // If no AM time out, set it to expected AM out time
+                    if (!$parsedAmOut) {
+                        $parsedAmOut = $expectedAmOut;
+                    }
+
+                    // Early out case for AM (employee leaves earlier than expected AM time out)
+                    if ($parsedAmOut < $expectedAmOut) {
+                        $amRemarks .= " (Early Out)";
+                    }
                 } else {
                     $timeIn24 = null;
                     $timeOut24 = null;
+                    $amRemarks = "Absent";
                 }
+
+
 
 
                 $pmTimeIn24 = null;
@@ -98,7 +111,7 @@ if (!empty($data)) {
                     }
 
                     if ($parsedPmOut < $expectedPmOut) {
-                        $pmRemarks .= " (Left Early)";
+                        $pmRemarks .= " (Early Out)";
                     }
 
                     $pmTimeOut24 = date("H:i:s", $parsedPmOut);
@@ -113,8 +126,6 @@ if (!empty($data)) {
                         $pmRemarks = null; // Just leave it empty for now
                     }
                 }
-
-
 
                 // Check if the record already exists
                 $checkStmt = $pdo->prepare("SELECT time_id, am_time_out, pm_time_out FROM timekeeping WHERE time_empId = ? AND time_dateAdd = ?");

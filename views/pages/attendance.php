@@ -207,7 +207,10 @@ $dtrRecords = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                 <!-- Total Hours -->
                                 <td class="text-center font-semibold">
                                     <?php
+                                    // Initialize total time in seconds
                                     $totalSeconds = 0;
+
+                                    // AM Time Calculation (If available)
                                     if (!empty($dtr['am_time_in']) && !empty($dtr['am_time_out'])) {
                                         $amIn = strtotime($dtr['am_time_in']);
                                         $amOut = strtotime($dtr['am_time_out']);
@@ -215,6 +218,8 @@ $dtrRecords = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                             $totalSeconds += ($amOut - $amIn);
                                         }
                                     }
+
+                                    // PM Time Calculation (If available)
                                     if (!empty($dtr['pm_time_in']) && !empty($dtr['pm_time_out'])) {
                                         $pmIn = strtotime($dtr['pm_time_in']);
                                         $pmOut = strtotime($dtr['pm_time_out']);
@@ -222,12 +227,22 @@ $dtrRecords = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                             $totalSeconds += ($pmOut - $pmIn);
                                         }
                                     }
-                                    $breakHours = isset($dtr['dept_break_time']) ? floatval($dtr['dept_break_time']) : 0;
-                                    $totalHours = ($totalSeconds / 3600) - $breakHours;
 
-                                    echo ($totalHours > 0) ? number_format($totalHours, 2) : '--';
+                                    // If total time is available, display in hours
+                                    if ($totalSeconds > 0) {
+                                        $totalHours = floor($totalSeconds / 3600);
+                                        $totalMinutes = floor(($totalSeconds % 3600) / 60);
+                                        // Display as total hours (including fractional hours if there are minutes)
+                                        $totalTime = $totalHours + ($totalMinutes / 60);
+                                        echo number_format($totalTime, 2) . ' hours';  // Professional format: "X.XX hours"
+                                    }
+                                    // If no time data is available
+                                    else {
+                                        echo 'TBD';  // Placeholder for missing data
+                                    }
                                     ?>
                                 </td>
+
 
                                 <!-- Status -->
                                 <td>

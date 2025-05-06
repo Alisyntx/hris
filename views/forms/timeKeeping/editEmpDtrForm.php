@@ -73,15 +73,16 @@ if ($timeId) {
                 </div>
                 <div class="flex w-full gap-1 flex-col">
                     <label class="text-xs font-medium text-gray-600">Am Remarks</label>
-                    <select name="pm_remarks" class="select input-sm w-full border-gray-300">
-                        <option disabled <?php echo empty($timeData['pm_time_remarks']) ? 'selected' : ''; ?>>Select PM Remark</option>
-                        <option value="On Time" <?php echo ($timeData['pm_time_remarks'] === 'On Time') ? 'selected' : ''; ?>>On Time</option>
-                        <option value="Late" <?php echo ($timeData['pm_time_remarks'] === 'Late') ? 'selected' : ''; ?>>Late</option>
-                        <option value="Half Day" <?php echo ($timeData['pm_time_remarks'] === 'Half Day') ? 'selected' : ''; ?>>Half Day</option>
-                        <option value="Absent" <?php echo ($timeData['pm_time_remarks'] === 'Absent') ? 'selected' : ''; ?>>Absent</option>
+                    <select name="am_remarks" class="select input-sm w-full border-gray-300">
+                        <option disabled <?php echo empty($timeData['am_time_remarks']) ? 'selected' : ''; ?>>Select AM Remark</option>
+                        <option value="On Time" <?php echo ($timeData['am_time_remarks'] === 'On Time') ? 'selected' : ''; ?>>On Time</option>
+                        <option value="On Time (Early Out)" <?php echo ($timeData['am_time_remarks'] === 'On Time (Early Out)') ? 'selected' : ''; ?>>On Time (Early Out)</option>
+                        <option value="Late" <?php echo ($timeData['am_time_remarks'] === 'Late') ? 'selected' : ''; ?>>Late</option>
+                        <option value="Half Day" <?php echo ($timeData['am_time_remarks'] === 'Half Day') ? 'selected' : ''; ?>>Half Day</option>
+                        <option value="Absent" <?php echo ($timeData['am_time_remarks'] === 'Absent') ? 'selected' : ''; ?>>Absent</option>
                     </select>
-
                 </div>
+
             </div>
 
             <!-- PM Section -->
@@ -101,6 +102,7 @@ if ($timeId) {
                     <select name="pm_remarks" class="select input-sm w-full border-gray-300">
                         <option disabled <?php echo empty($timeData['pm_time_remarks']) ? 'selected' : ''; ?>>Select PM Remark</option>
                         <option value="On Time" <?php echo ($timeData['pm_time_remarks'] === 'On Time') ? 'selected' : ''; ?>>On Time</option>
+                        <option value="On Time (Early Out)" <?php echo ($timeData['pm_time_remarks'] === 'On Time (Early Out)') ? 'selected' : ''; ?>>On Time (Early Out)</option>
                         <option value="Late" <?php echo ($timeData['pm_time_remarks'] === 'Late') ? 'selected' : ''; ?>>Late</option>
                         <option value="Half Day" <?php echo ($timeData['pm_time_remarks'] === 'Half Day') ? 'selected' : ''; ?>>Half Day</option>
                         <option value="Absent" <?php echo ($timeData['pm_time_remarks'] === 'Absent') ? 'selected' : ''; ?>>Absent</option>
