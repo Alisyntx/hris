@@ -16,7 +16,7 @@ $departments = $stmt->fetchAll();
     <div class="modal-box font-popins">
         <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2" onclick="editEmp.close()">✕</button>
         <h3 class="text-lg font-semibold text-center">Edit Employee</h3>
-        <form id="editEmpFormBtn" method="post" enctype="multipart/form-data">
+        <form class="flex flex-col" id="editEmpFormBtn" method="post" enctype="multipart/form-data">
             <div class="avatar flex justify-center items-center flex-col relative">
                 <div class="w-24 rounded-lg overflow-hidden border border-gray-300 cursor-pointer relative" id="imagePreview">
                     <img id="previewImg" src="http://localhost/hris/<?php echo $emp['emp_profPic']; ?>" class="w-full h-full object-cover" />
@@ -52,11 +52,13 @@ $departments = $stmt->fetchAll();
             <input type="text" placeholder="Address" name="address" value="<?= htmlspecialchars($emp['emp_address'] ?? '') ?>" class="input input-sm w-full mt-2" />
             <input type="text" placeholder="Position" name="position" value="<?= htmlspecialchars($emp['emp_position'] ?? '') ?>" class="input input-sm w-full mt-2" />
 
-            <label class="form-control w-full max-w-xs">
+            <label class="form-control w-full">
+
                 <div class="label">
                     <span class="label-text text-sm">Change Department</span>
                 </div>
-                <select name="department" class="select select-info w-full select-sm max-w-xs" required>
+
+                <select name="department" class="select select-info w-full select-sm " required>
                     <option disabled>Select Department</option>
                     <?php foreach ($departments as $dept): ?>
                         <option

@@ -124,7 +124,6 @@ function fetchDepartments() {
             if (response.status === "success") {
                 let rows = "";
                 response.data.forEach((dept) => {
-                    // Format break duration (e.g., 1.5 → "1 hr 30 mins")
                     const breakHours = Math.floor(dept.dept_break_time);
                     const breakMinutes = Math.round(
                         (dept.dept_break_time - breakHours) * 60
@@ -135,19 +134,25 @@ function fetchDepartments() {
                         breakMinutes > 0 ? " " + breakMinutes + " mins" : ""
                     }`.trim();
 
+                    // Apply formatTime() to time fields
+                    const amIn = formatTime(dept.dept_amtime_in);
+                    const amOut = formatTime(dept.dept_amtime_out);
+                    const pmIn = formatTime(dept.dept_pmtime_in);
+                    const pmOut = formatTime(dept.dept_pmtime_out);
+
                     rows += `
                         <tr class="hover:bg-base-300">
                             <td class="font-medium">${dept.dept_name}</td>
                             <td>
                                 <div class="text-xs leading-tight">
-                                    <div><b>AM In:</b> ${dept.dept_amtime_in}</div>
-                                    <div><b>AM Out:</b> ${dept.dept_amtime_out}</div>
+                                    <div><b>AM In:</b> ${amIn}</div>
+                                    <div><b>AM Out:</b> ${amOut}</div>
                                 </div>
                             </td>
                             <td>
                                 <div class="text-xs leading-tight">
-                                    <div><b>PM In:</b> ${dept.dept_pmtime_in}</div>
-                                    <div><b>PM Out:</b> ${dept.dept_pmtime_out}</div>
+                                    <div><b>PM In:</b> ${pmIn}</div>
+                                    <div><b>PM Out:</b> ${pmOut}</div>
                                 </div>
                             </td>
                             <td class="text-xs">${breakTimeFormatted}</td>

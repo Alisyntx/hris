@@ -54,24 +54,60 @@ if ($timeId) {
 
             </div>
 
-
             <!-- Department -->
             <label class="text-xs font-medium text-gray-600">Department</label>
             <div class="p-2 text-sm bg-gray-100 border border-gray-300 rounded-md">
                 <?= htmlspecialchars($timeData['emp_department']) ?>
             </div>
+            <!-- AM Section -->
+            <div class="flex gap-1">
+                <div class="flex w-full gap-1 flex-col">
+                    <label class="text-xs font-medium text-gray-600">Am (Time In)</label>
+                    <input type="time" name="am_timein" class="input input-sm w-full border-gray-300"
+                        value="<?= htmlspecialchars($timeData['am_time_in']) ?>" />
+                </div>
+                <div class="flex w-full gap-1 flex-col">
+                    <label class="text-xs font-medium text-gray-600">Am (Time Out)</label>
+                    <input type="time" name="am_timeout" class="input input-sm w-full border-gray-300"
+                        value="<?= htmlspecialchars($timeData['am_time_out']) ?>" />
+                </div>
+                <div class="flex w-full gap-1 flex-col">
+                    <label class="text-xs font-medium text-gray-600">Am Remarks</label>
+                    <select name="pm_remarks" class="select input-sm w-full border-gray-300">
+                        <option disabled <?php echo empty($timeData['pm_time_remarks']) ? 'selected' : ''; ?>>Select PM Remark</option>
+                        <option value="On Time" <?php echo ($timeData['pm_time_remarks'] === 'On Time') ? 'selected' : ''; ?>>On Time</option>
+                        <option value="Late" <?php echo ($timeData['pm_time_remarks'] === 'Late') ? 'selected' : ''; ?>>Late</option>
+                        <option value="Half Day" <?php echo ($timeData['pm_time_remarks'] === 'Half Day') ? 'selected' : ''; ?>>Half Day</option>
+                        <option value="Absent" <?php echo ($timeData['pm_time_remarks'] === 'Absent') ? 'selected' : ''; ?>>Absent</option>
+                    </select>
 
-            <!-- Time In -->
-            <label class="text-xs font-medium text-gray-600">Time In</label>
-            <input type="time" name="time_in" class="input input-sm w-full border-gray-300" value="<?= htmlspecialchars($timeData['time_in']) ?>" />
+                </div>
+            </div>
 
-            <!-- Time Out -->
-            <label class="text-xs font-medium text-gray-600">Time Out</label>
-            <input type="time" name="time_out" class="input input-sm w-full border-gray-300" value="<?= htmlspecialchars($timeData['time_out']) ?>" />
+            <!-- PM Section -->
+            <div class="flex gap-1">
+                <div class="flex w-full gap-1 flex-col">
+                    <label class="text-xs font-medium text-gray-600">Pm (Time In)</label>
+                    <input type="time" name="pm_timein" class="input input-sm w-full border-gray-300"
+                        value="<?= htmlspecialchars($timeData['pm_time_in']) ?>" />
+                </div>
+                <div class="flex w-full gap-1 flex-col">
+                    <label class="text-xs font-medium text-gray-600">Pm (Time Out)</label>
+                    <input type="time" name="pm_timeout" class="input input-sm w-full border-gray-300"
+                        value="<?= htmlspecialchars($timeData['pm_time_out']) ?>" />
+                </div>
+                <div class="flex w-full gap-1 flex-col">
+                    <label class="text-xs font-medium text-gray-600">Pm Remarks</label>
+                    <select name="pm_remarks" class="select input-sm w-full border-gray-300">
+                        <option disabled <?php echo empty($timeData['pm_time_remarks']) ? 'selected' : ''; ?>>Select PM Remark</option>
+                        <option value="On Time" <?php echo ($timeData['pm_time_remarks'] === 'On Time') ? 'selected' : ''; ?>>On Time</option>
+                        <option value="Late" <?php echo ($timeData['pm_time_remarks'] === 'Late') ? 'selected' : ''; ?>>Late</option>
+                        <option value="Half Day" <?php echo ($timeData['pm_time_remarks'] === 'Half Day') ? 'selected' : ''; ?>>Half Day</option>
+                        <option value="Absent" <?php echo ($timeData['pm_time_remarks'] === 'Absent') ? 'selected' : ''; ?>>Absent</option>
+                    </select>
 
-            <!-- Remarks -->
-            <label class="text-xs font-medium text-gray-600">Remarks</label>
-            <input type="text" name="time_remarks" class="input input-sm w-full border-gray-300" value="<?= htmlspecialchars($timeData['time_remarks']) ?>" />
+                </div>
+            </div>
 
             <!-- Submit Button -->
             <div class="flex justify-end pt-2">

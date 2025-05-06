@@ -45,40 +45,76 @@ if (!empty($data)) {
                     $lateDtrRemark = "Late DTR Upload";
                 }
 
-                // Parse AM timeIn and timeOut safely
-                $parsedTimeIn = $timeIn ? strtotime($timeIn) : false;
-                $parsedTimeOut = $timeOut ? strtotime($timeOut) : false;
+                // Default expected times
+                // Get department ID based on employee
+                $deptStmt = $pdo->prepare("SELECT emp_department FROM employee WHERE emp_id = ?");
+                $deptStmt->execute([$empId]);
+                $deptId = $deptStmt->fetchColumn();
 
-                // Default working start time for AM (e.g., 8:00 AM)
-                $defaultTimeIn = strtotime('08:00:00');
+                // Get department schedule
+                $schedStmt = $pdo->prepare("SELECT dept_amtime_in, dept_amtime_out, dept_pmtime_in, dept_pmtime_out FROM departments WHERE dept_id = ?");
+                $schedStmt->execute([$deptId]);
+                $schedule = $schedStmt->fetch(PDO::FETCH_ASSOC);
 
-                // Determine AM remarks and time values
-                if ($parsedTimeIn === false) {
-                    $amRemarks = 'Absent';
+                // Department-based expected times
+                $expectedAmIn = isset($schedule['dept_amtime_in']) ? strtotime($schedule['dept_amtime_in']) : strtotime("08:00:00");
+                $expectedAmOut = isset($schedule['dept_amtime_out']) ? strtotime($schedule['dept_amtime_out']) : strtotime("12:00:00");
+                $expectedPmIn = isset($schedule['dept_pmtime_in']) ? strtotime($schedule['dept_pmtime_in']) : strtotime("13:00:00");
+                $expectedPmOut = isset($schedule['dept_pmtime_out']) ? strtotime($schedule['dept_pmtime_out']) : strtotime("17:00:00");
+
+
+                // PARSE times
+                $parsedAmIn = $timeIn ? strtotime($timeIn) : false;
+                $parsedAmOut = $timeOut ? strtotime($timeOut) : false;
+                $parsedPmIn = $pmTimeIn ? strtotime($pmTimeIn) : false;
+                $parsedPmOut = $pmTimeOut ? strtotime($pmTimeOut) : false;
+
+                // Initialize remarks
+                $amRemarks = "Absent";
+                $pmRemarks = "Absent";
+
+                // AM Session
+                if ($parsedAmIn) {
+                    $timeIn24 = date("H:i:s", $parsedAmIn);
+                    $amRemarks = ($parsedAmIn <= $expectedAmIn) ? "On Time" : "Late";
+                    $timeOut24 = $parsedAmOut ? date("H:i:s", $parsedAmOut) : null;
+                } else {
                     $timeIn24 = null;
-                } else {
-                    $timeIn24 = date("H:i:s", $parsedTimeIn);
-                    $amRemarks = ($parsedTimeIn <= $defaultTimeIn) ? 'On Time' : 'Late';
+                    $timeOut24 = null;
                 }
 
-                // Parse PM timeIn and timeOut safely
-                $parsedPmTimeIn = $pmTimeIn ? strtotime($pmTimeIn) : false;
-                $parsedPmTimeOut = $pmTimeOut ? strtotime($pmTimeOut) : false;
 
-                // Default working start time for PM (e.g., 1:00 PM)
-                $defaultPmTimeIn = strtotime('13:00:00');
+                $pmTimeIn24 = null;
+                $pmTimeOut24 = null;
 
-                $pmRemarks = '';
-                if ($parsedPmTimeIn === false) {
-                    $pmRemarks = 'Absent';
-                    $pmTimeIn24 = null;
+                // PM Session
+                if ($parsedPmIn) {
+                    $pmTimeIn24 = date("H:i:s", $parsedPmIn);
+                    $pmRemarks = ($parsedPmIn <= $expectedPmIn) ? "On Time" : "Late";
+
+                    if (!$parsedPmOut) {
+                        $parsedPmOut = $expectedPmOut;
+                        $pmRemarks .= " (Auto Timeout)";
+                    }
+
+                    if ($parsedPmOut < $expectedPmOut) {
+                        $pmRemarks .= " (Left Early)";
+                    }
+
+                    $pmTimeOut24 = date("H:i:s", $parsedPmOut);
                 } else {
-                    $pmTimeIn24 = date("H:i:s", $parsedPmTimeIn);
-                    $pmRemarks = ($parsedPmTimeIn <= $defaultPmTimeIn) ? 'On Time' : 'Late';
+                    $currentHour = date("H");
+
+                    if ($parsedAmIn && $currentHour >= 17) {
+                        $pmRemarks = "Half Day (No PM In)";
+                    } elseif (!$parsedAmIn) {
+                        $pmRemarks = "Absent";
+                    } else {
+                        $pmRemarks = null; // Just leave it empty for now
+                    }
                 }
 
-                $timeOut24 = $parsedTimeOut ? date("H:i:s", $parsedTimeOut) : null;
-                $pmTimeOut24 = $parsedPmTimeOut ? date("H:i:s", $parsedPmTimeOut) : null;
+
 
                 // Check if the record already exists
                 $checkStmt = $pdo->prepare("SELECT time_id, am_time_out, pm_time_out FROM timekeeping WHERE time_empId = ? AND time_dateAdd = ?");

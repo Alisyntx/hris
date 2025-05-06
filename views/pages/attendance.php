@@ -118,6 +118,7 @@ $dtrRecords = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 </div>
             </div>
         </div>
+
         <div class="w-full flex flex-col mt-1">
             <div class="w-full h-9 flex flex-row items-center ml-1">
                 <!-- Search Bar -->
@@ -126,7 +127,7 @@ $dtrRecords = $stmt->fetchAll(PDO::FETCH_ASSOC);
                     <input type="search" id="searchEmployee" class="grow px-2 focus:outline-none" placeholder="search">
                 </label>
                 <!-- Add New Employee Button -->
-                <a class="px-2 py-1 ml-2 font-popins text-sm rounded-sm flex items-center transition-all duration-300 ease-in-out 
+                <a class="px-2 py-1 cursor-pointer ml-2 font-popins text-sm rounded-sm flex items-center transition-all duration-300 ease-in-out 
                    text-primaryclr bg-accentclr hover:text-mainclr hover:bg-primaryclr active:scale-95 active:opacity-80" id="downloadDTR">
                     <i class='bx bx-download text-xl mr-2'></i>
                     Download DTR Template
@@ -173,7 +174,6 @@ $dtrRecords = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                                 $profilePic = isset($dtr['emp_profPic']) && !empty($dtr['emp_profPic']) ? $dtr['emp_profPic'] : $defaultPic;
                                                 ?>
                                                 <img src="http://localhost/hris/<?= htmlspecialchars($profilePic) ?>" alt="Employee Image" />
-
                                             </div>
                                         </div>
                                         <div>

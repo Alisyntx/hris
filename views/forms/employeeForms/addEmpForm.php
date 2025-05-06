@@ -7,7 +7,7 @@ $departments = $stmt->fetchAll();
     <div class="modal-box font-popins">
         <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2" onclick="addEmp.close()">✕</button>
         <h3 class="text-lg font-semibold text-center">Add Employee</h3>
-        <form id="addEmpFormBtn" method="post" enctype="multipart/form-data">
+        <form class="flex flex-col" id="addEmpFormBtn" method="post" enctype="multipart/form-data">
             <div class="avatar flex justify-center items-center flex-col relative">
                 <div class="w-24 rounded-lg overflow-hidden border border-gray-300 cursor-pointer relative" id="imagePreview">
                     <img id="previewImg" src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp" class="w-full h-full object-cover" />
@@ -44,11 +44,11 @@ $departments = $stmt->fetchAll();
             </div>
             <input type="text" placeholder="address" name="address" class="input input-sm w-full mt-2" />
             <input type="text" placeholder="Position" name="position" class="input input-sm w-full mt-2" />
-            <label class="form-control w-full max-w-xs">
+            <label class="form-control w-full flex flex-col">
                 <div class="label">
                     <span class="label-text text-sm">Select Department</span>
                 </div>
-                <select name="department" class="select select-info w-full select-sm max-w-xs" required>
+                <select name="department" class="select select-info w-full select-sm" required>
                     <option disabled selected>Select Department</option>
                     <?php foreach ($departments as $dept): ?>
                         <option class="font-popins" value="<?= htmlspecialchars($dept['dept_name']) ?>">
