@@ -9,7 +9,7 @@
 </head>
 
 <body>
-    <nav class="bg-accentclr p-1 h-screen w-[20%] rounded-r-md">
+    <nav id="sidebar" class="bg-accentclr p-1 h-screen w-[20%] rounded-r-md transition-all duration-300 ease-in-out overflow-hidden">
 
         <div class="flex flex-col font-popins">
             <div class="h-20 w-full mb-14 flex justify-center items-center mt-2">

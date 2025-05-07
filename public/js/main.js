@@ -33,5 +33,23 @@ $(document).ready(function () {
         $(".btnFilters").on("click", function () {
             handleAttendanceReport();
         });
+
+        // function for sidebar
+        let isOpen = true;
+
+        $("#menu-toggle").on("click", function () {
+            if (isOpen) {
+                $("#sidebar").removeClass("w-[20%]").addClass("w-0");
+                $("#dtrTableResponsive")
+                    .removeClass("w-[1120px]")
+                    .addClass("w-full");
+            } else {
+                $("#sidebar").removeClass("w-0").addClass("w-[20%]");
+                $("#dtrTableResponsive")
+                    .removeClass("w-full")
+                    .addClass("w-[1120px]");
+            }
+            isOpen = !isOpen;
+        });
     });
 });
