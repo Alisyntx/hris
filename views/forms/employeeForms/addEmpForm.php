@@ -1,7 +1,25 @@
 <?php
 include '../../../database/conn.php';
-$stmt = $pdo->query("SELECT dept_id, dept_name FROM departments");
-$departments = $stmt->fetchAll();
+
+/**
+ * always put try catch block when querying the database
+ * 
+ * - striix
+ */
+try {
+    $stmt = $pdo->query("SELECT dept_id, dept_name FROM departments");
+    $departments = $stmt->fetchAll();
+} catch (PDOException $e) {
+
+    if (defined('DEBUG_MODE')) {
+        echo "<div class='alert alert-error'>Error: " . htmlspecialchars($e->getMessage()) . "</div>";
+    } else {
+        echo "Database error: " . $e->getMessage();
+    }
+
+    $departments = [];
+    exit;
+}
 ?>
 <dialog id="addEmp" class="modal">
     <div class="modal-box font-popins">
