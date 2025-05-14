@@ -12,6 +12,7 @@
                     <th>Time</th>
                     <th>Reason</th>
                     <th>Date</th>
+                    <th>Status</th>
                     <th>Action</th>
                 </tr>
             </thead>

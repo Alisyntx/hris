@@ -1,3 +1,10 @@
+<?php
+session_start();
+if (!isset($_SESSION['user_id'])) {
+    header("Location: login/login.php ");
+    exit();
+};
+?>
 <!DOCTYPE html>
 <html lang="en" data-theme="light">
 
@@ -48,6 +55,27 @@
             </div>
         </div>
     </div>
+    <!-- sweat alert for log in successful -->
+    <?php if (isset($_GET['login']) && $_GET['login'] === 'success'): ?>
+
+        <script>
+            Swal.fire({
+                icon: 'success',
+                title: 'Login Successful',
+                text: 'Welcome back, Admin!',
+                timer: 2000,
+                showConfirmButton: false
+            });
+        </script>
+        <script>
+            // Remove the query string from URL after displaying
+            if (window.history.replaceState) {
+                const url = new URL(window.location);
+                url.searchParams.delete('login');
+                window.history.replaceState({}, document.title, url.pathname);
+            }
+        </script>
+    <?php endif; ?>
 
 </body>
 

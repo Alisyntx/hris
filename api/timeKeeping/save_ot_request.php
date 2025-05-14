@@ -8,11 +8,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $otEndTime = $_POST['ot_end_time'];
     $otDate = $_POST['otDate'];
     $otReason = $_POST['otReason'];
+    $otStatus = 'pending'; // default status
 
     try {
-        // Prepare SQL
-        $stmt = $pdo->prepare("INSERT INTO overtime_request (ot_emp_name, ot_start_time, ot_end_time, ot_reason, ot_date) 
-                               VALUES (:otEmpName, :otStartTime, :otEndTime, :otReason, :otDate)");
+        // Prepare SQL with ot_status
+        $stmt = $pdo->prepare("INSERT INTO overtime_request 
+            (ot_emp_name, ot_start_time, ot_end_time, ot_reason, ot_date, ot_status) 
+            VALUES (:otEmpName, :otStartTime, :otEndTime, :otReason, :otDate, :otStatus)");
 
         // Bind parameters
         $stmt->bindParam(':otEmpName', $otEmpName);
@@ -20,6 +22,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stmt->bindParam(':otEndTime', $otEndTime);
         $stmt->bindParam(':otReason', $otReason);
         $stmt->bindParam(':otDate', $otDate);
+        $stmt->bindParam(':otStatus', $otStatus);
 
         // Execute
         $stmt->execute();

@@ -26,7 +26,7 @@ $employees = $stmt->fetchAll();
         </label>
 
         <!-- Add New Employee Button -->
-        <a class="px-2 py-1 ml-2 font-popins text-sm rounded-sm flex items-center transition-all duration-300 ease-in-out 
+        <a class="px-2 py-1 ml-2 font-popins cursor-pointer text-sm rounded-sm flex items-center transition-all duration-300 ease-in-out 
         text-primaryclr bg-accentclr hover:text-mainclr hover:bg-primaryclr active:scale-95 active:opacity-80" id="addEmployee">
             <i class='bx bxs-user-plus text-2xl mr-2'></i>
             Add New Employee
@@ -72,7 +72,7 @@ $employees = $stmt->fetchAll();
                                         <i class='bx bx-edit-alt text-[15px]'></i>
                                     </button>
                                 </div>
-                                <div class="tooltip tooltip-close tooltip-info tooltip-top" data-tip="Delete">
+                                <div class="tooltip tooltip-close tooltip-info tooltip-top" data-tip="Remove">
                                     <button class="empDeleteBtn btn btn-xs btn-circle" id="<?= htmlspecialchars($employee['emp_id']); ?>">
                                         <i class='bx bx-trash text-[15px]'></i>
                                     </button>

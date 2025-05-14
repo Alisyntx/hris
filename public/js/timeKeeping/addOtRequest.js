@@ -11,6 +11,56 @@ export function handleAddOvertimeRequest() {
             );
         });
         fetchOtRequests();
+        setInterval(fetchOtRequests, 5000);
+    });
+
+    $(document).on("click", ".approveOtBtn, .rejectOtBtn", function () {
+        const otId = $(this).data("id");
+        const action = $(this).hasClass("approveOtBtn")
+            ? "approved"
+            : "rejected";
+        const confirmText = action === "approved" ? "approve" : "reject";
+
+        Swal.fire({
+            title: `Are you sure?`,
+            text: `You are about to ${confirmText} this overtime request.`,
+            icon: "question",
+            showCancelButton: true,
+            confirmButtonText: `Yes, ${confirmText} it`,
+            cancelButtonText: "Cancel",
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    url: "api/timeKeeping/update_ot_status.php",
+                    method: "POST",
+                    data: {
+                        ot_id: otId,
+                        status: action,
+                    },
+                    dataType: "json",
+                    success: function (response) {
+                        Swal.fire({
+                            icon: response.status,
+                            title:
+                                response.status === "success"
+                                    ? "Success!"
+                                    : "Error",
+                            text: response.message,
+                            timer: 2000,
+                            showConfirmButton: false,
+                        });
+                        fetchOtRequests(); // refresh table
+                    },
+                    error: function (xhr, status, error) {
+                        Swal.fire({
+                            icon: "error",
+                            title: "Server Error",
+                            text: "An error occurred: " + error,
+                        });
+                    },
+                });
+            }
+        });
     });
 }
 
@@ -80,10 +130,25 @@ function fetchOtRequests() {
                             <td>${startTimeFormatted} - ${endTimeFormatted}</td>
                             <td>${req.ot_reason}</td>
                             <td>${req.ot_date}</td>
-                            <td>
-                                <button class="btn btn-xs btn-primary text-white">Accept</button>
-                                <button class="btn btn-xs btn-error text-white">Reject</button>
+                            <td><span class="badge badge-sm ${
+                                req.ot_status === "approved"
+                                    ? "badge-success badge-sm"
+                                    : req.ot_status === "rejected"
+                                    ? "badge-error badge-sm text-primaryclr"
+                                    : "badge-warning"
+                            }">
+                                    ${req.ot_status}
+                                </span>
                             </td>
+                           <td>
+                                <button class="btn btn-xs btn-primary text-white approveOtBtn" data-id="${
+                                    req.ot_id
+                                }">Accept</button>
+                                <button class="btn btn-xs btn-error text-white rejectOtBtn" data-id="${
+                                    req.ot_id
+                                }">Reject</button>
+                            </td>
+
                             
                         </tr>
                     `;

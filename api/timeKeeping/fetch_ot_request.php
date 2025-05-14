@@ -1,17 +1,16 @@
 <?php
-include '../../database/conn.php';
+require_once '../../database/conn.php';
 
 try {
-    $stmt = $pdo->query("SELECT ot_id, ot_emp_name, ot_start_time, ot_end_time, ot_reason, ot_date FROM overtime_request ORDER BY ot_id DESC");
-    $requests = $stmt->fetchAll();
+    $today = date('Y-m-d');
 
-    echo json_encode([
-        'status' => 'success',
-        'data' => $requests
-    ]);
+    $stmt = $pdo->prepare("SELECT * FROM overtime_request WHERE ot_date = :today ORDER BY ot_date ASC");
+    $stmt->bindParam(':today', $today);
+    $stmt->execute();
+
+    $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    echo json_encode(['status' => 'success', 'data' => $data]);
 } catch (PDOException $e) {
-    echo json_encode([
-        'status' => 'error',
-        'message' => 'Failed to fetch overtime requests.'
-    ]);
+    echo json_encode(['status' => 'error', 'message' => 'Fetch error: ' . $e->getMessage()]);
 }
