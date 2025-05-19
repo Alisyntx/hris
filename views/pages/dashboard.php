@@ -35,7 +35,7 @@
                         <a href="index.php?page=employees" class="hover:bg-mainclr transition shadow-lg flex items-center justify-evenly  p-2 w-full bg-accentclr text-primaryclr font-normal rounded-md"><i class='bx bx-message-square-edit text-lg'></i> Update employee
                         </a>
 
-                        <button id="searchEmployee" class="hover:bg-mainclr transition shadow-lg flex items-center justify-evenly  p-2 w-full bg-accentclr text-primaryclr font-normal rounded-md"><i class='bx bx-search-alt text-lg'></i> Search employee</button>
+                        <button class="hover:bg-mainclr transition shadow-lg flex items-center justify-evenly  p-2 w-full bg-accentclr text-primaryclr font-normal rounded-md" id="addOtRequest"><i class='bx bx-timer text-lg'></i> Request Overtime</button>
                     </div>
                 </div>
             </div>
@@ -90,20 +90,56 @@
                 <div class=" text-center text-lg text-mainclr font-semibold">Attendance Summary</div>
                 <div class="flex flex-col w-full h-full gap-1">
                     <div class="flex flex-row w-full mt-2 h-full gap-1">
-                        <div class="w-[29%]  h-full bg-accentclr flex-col items-center justify-evenly flex rounded-md p-1">
-                            <div class="text-lg text-primaryclr">50</div>
+                        <div class="bg-accentclr justify-evenly h-full flex-1 rounded-sm flex p-2 flex-col items-center">
+                            <div class="text-md text-primaryclr ">On Time</div>
                             <div class="w-full h-[1px] bg-primaryclr"></div>
-                            <div class="text-md text-primaryclr">Present</div>
+                            <div class="flex gap-2">
+                                <div class="text-xl font-bold flex items-center gap-1 text-primaryclr text-center">
+                                    <span class="text-sm font-light">am</span>
+                                    <div class="w-px h-5 bg-primaryclr"></div>
+                                    <span id="presentAM">0</span>
+                                </div>
+                                <div class="text-xl font-bold flex items-center gap-1 text-primaryclr text-center">
+                                    <span class="text-sm font-light">pm</span>
+                                    <div class="w-px h-5 bg-primaryclr"></div>
+                                    <span id="presentPM">0</span>
+                                </div>
+                            </div>
                         </div>
-                        <div class="w-[29%]  h-full bg-accentclr flex-col items-center justify-evenly flex rounded-md p-1">
-                            <div class="text-lg text-primaryclr">50</div>
-                            <div class="w-full h-[1px] bg-primaryclr"></div>
-                            <div class="text-md text-primaryclr">Late</div>
+                        <div class="bg-accentclr h-full flex-1 rounded-sm">
+                            <div class="bg-accentclr justify-evenly h-full flex-1 rounded-sm flex p-2 flex-col items-center">
+                                <div class="text-md text-primaryclr px-10">Late</div>
+                                <div class="w-full h-[1px] bg-primaryclr"></div>
+                                <div class="flex gap-2">
+                                    <div class="text-xl font-bold flex items-center gap-1 text-primaryclr text-center">
+                                        <span class="text-sm font-light">am</span>
+                                        <div class="w-px h-5 bg-primaryclr"></div>
+                                        <span id="lateAM">0</span>
+                                    </div>
+                                    <div class="text-xl font-bold flex items-center gap-1 text-primaryclr text-center">
+                                        <span class="text-sm font-light">pm</span>
+                                        <div class="w-px h-5 bg-primaryclr"></div>
+                                        <span id="latePM">0</span>
+                                    </div>
+                                </div>
+
+                            </div>
                         </div>
-                        <div class="w-[29%]  h-full bg-accentclr flex-col items-center justify-evenly flex rounded-md p-1">
-                            <div class="text-lg text-primaryclr">50</div>
+                        <div class="bg-accentclr justify-evenly h-full flex-1 rounded-sm flex p-2 flex-col items-center">
+                            <div class="text-md text-primaryclr px-10">Absent</div>
                             <div class="w-full h-[1px] bg-primaryclr"></div>
-                            <div class="text-md text-primaryclr">Absent</div>
+                            <div class="flex gap-2">
+                                <div class="text-xl font-bold flex items-center gap-1 text-primaryclr text-center">
+                                    <span class="text-sm font-light">am</span>
+                                    <div class="w-px h-5 bg-primaryclr"></div>
+                                    <span id="absentAM">0</span>
+                                </div>
+                                <div class="text-xl font-bold flex items-center gap-1 text-primaryclr text-center">
+                                    <span class="text-sm font-light">pm</span>
+                                    <div class="w-px h-5 bg-primaryclr"></div>
+                                    <span id="absentPM">0</span>
+                                </div>
+                            </div>
                         </div>
                         <div class="w-[29%]  h-full bg-accentclr flex-col items-center justify-evenly flex rounded-md p-1">
                             <div class="text-lg text-primaryclr">50</div>

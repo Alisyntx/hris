@@ -57,10 +57,22 @@ if (!empty($data)) {
                 $schedule = $schedStmt->fetch(PDO::FETCH_ASSOC);
 
                 // Department-based expected times
-                $expectedAmIn = isset($schedule['dept_amtime_in']) ? strtotime($schedule['dept_amtime_in']) : strtotime("08:00:00");
-                $expectedAmOut = isset($schedule['dept_amtime_out']) ? strtotime($schedule['dept_amtime_out']) : strtotime("12:00:00");
-                $expectedPmIn = isset($schedule['dept_pmtime_in']) ? strtotime($schedule['dept_pmtime_in']) : strtotime("13:00:00");
-                $expectedPmOut = isset($schedule['dept_pmtime_out']) ? strtotime($schedule['dept_pmtime_out']) : strtotime("17:00:00");
+                $expectedAmIn = (!empty($schedule['dept_amtime_in']) && strtotime($schedule['dept_amtime_in']))
+                    ? strtotime($schedule['dept_amtime_in'])
+                    : strtotime("08:00:00");
+
+                $expectedAmOut = (!empty($schedule['dept_amtime_out']) && strtotime($schedule['dept_amtime_out']))
+                    ? strtotime($schedule['dept_amtime_out'])
+                    : strtotime("12:00:00");
+
+                $expectedPmIn = (!empty($schedule['dept_pmtime_in']) && strtotime($schedule['dept_pmtime_in']))
+                    ? strtotime($schedule['dept_pmtime_in'])
+                    : strtotime("13:00:00");
+
+                $expectedPmOut = (!empty($schedule['dept_pmtime_out']) && strtotime($schedule['dept_pmtime_out']))
+                    ? strtotime($schedule['dept_pmtime_out'])
+                    : strtotime("18:00:00");
+
 
 
                 // PARSE times
@@ -105,16 +117,16 @@ if (!empty($data)) {
                     $pmTimeIn24 = date("H:i:s", $parsedPmIn);
                     $pmRemarks = ($parsedPmIn <= $expectedPmIn) ? "On Time" : "Late";
 
-                    if (!$parsedPmOut) {
-                        $parsedPmOut = $expectedPmOut;
-                        $pmRemarks .= " (Auto Timeout)";
-                    }
+                    if ($parsedPmOut) {
+                        // Only check early out if actual time out is present
+                        if ($parsedPmOut < $expectedPmOut) {
+                            $pmRemarks .= " (Early Out)";
+                        }
 
-                    if ($parsedPmOut < $expectedPmOut) {
-                        $pmRemarks .= " (Early Out)";
+                        $pmTimeOut24 = date("H:i:s", $parsedPmOut);
+                    } else {
+                        $pmTimeOut24 = null; // Still at work or forgot to log out
                     }
-
-                    $pmTimeOut24 = date("H:i:s", $parsedPmOut);
                 } else {
                     $currentHour = date("H");
 
@@ -179,6 +191,7 @@ if (!empty($data)) {
         echo json_encode([
             "success" => true,
             "message" => "Data imported successfully!",
+            'debuging' =>  $expectedPmOut,
             "data" => $allData
         ]);
     } catch (PDOException $e) {

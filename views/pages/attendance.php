@@ -57,8 +57,6 @@ $dtrRecords = $stmt->fetchAll(PDO::FETCH_ASSOC);
                         <span id="presentPM">0</span>
                     </div>
                 </div>
-
-
             </div>
             <!-- late -->
             <div class="bg-accentclr h-full flex-1 rounded-sm">
