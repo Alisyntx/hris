@@ -45,15 +45,14 @@ if (!empty($data)) {
                     $lateDtrRemark = "Late DTR Upload";
                 }
 
-                // Default expected times
-                // Get department ID based on employee
                 $deptStmt = $pdo->prepare("SELECT emp_department FROM employee WHERE emp_id = ?");
                 $deptStmt->execute([$empId]);
-                $deptId = $deptStmt->fetchColumn();
+                $deptName = $deptStmt->fetchColumn(); // e.g., "IT Department"
 
-                // Get department schedule
-                $schedStmt = $pdo->prepare("SELECT dept_amtime_in, dept_amtime_out, dept_pmtime_in, dept_pmtime_out FROM departments WHERE dept_id = ?");
-                $schedStmt->execute([$deptId]);
+                // Now match using department name
+                $schedStmt = $pdo->prepare("SELECT dept_amtime_in, dept_amtime_out, dept_pmtime_in, dept_pmtime_out FROM departments WHERE dept_name = ?");
+                $schedStmt->execute([$deptName]);
+
                 $schedule = $schedStmt->fetch(PDO::FETCH_ASSOC);
 
                 // Department-based expected times
@@ -71,9 +70,7 @@ if (!empty($data)) {
 
                 $expectedPmOut = (!empty($schedule['dept_pmtime_out']) && strtotime($schedule['dept_pmtime_out']))
                     ? strtotime($schedule['dept_pmtime_out'])
-                    : strtotime("18:00:00");
-
-
+                    : strtotime("17:00:00");
 
                 // PARSE times
                 $parsedAmIn = $timeIn ? strtotime($timeIn) : false;
@@ -187,6 +184,13 @@ if (!empty($data)) {
         // Fetch all records after import
         $fetchStmt = $pdo->query("SELECT * FROM timekeeping ORDER BY time_dateAdd DESC, time_id DESC");
         $allData = $fetchStmt->fetchAll(PDO::FETCH_ASSOC);
+        error_log(json_encode([
+            "success" => true,
+            "message" => "Data imported successfully!",
+            'debuging' =>  $expectedPmOut,
+            'schedules' => $schedule,
+            "data" => $allData
+        ], JSON_PRETTY_PRINT));
 
         echo json_encode([
             "success" => true,
