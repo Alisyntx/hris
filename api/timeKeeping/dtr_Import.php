@@ -104,8 +104,6 @@ if (!empty($data)) {
                 }
 
 
-
-
                 $pmTimeIn24 = null;
                 $pmTimeOut24 = null;
 
@@ -134,6 +132,15 @@ if (!empty($data)) {
                     } else {
                         $pmRemarks = null; // Just leave it empty for now
                     }
+                }
+
+                // Final half-day checks
+                if ($parsedAmIn && !$parsedPmIn && time() >= $expectedPmOut) {
+                    $pmRemarks = "Half Day (No PM In)";
+                }
+
+                if ($parsedPmIn && !$parsedAmIn && time() >= $expectedAmOut) {
+                    $amRemarks = "Half Day (No AM In)";
                 }
 
                 // Check if the record already exists
