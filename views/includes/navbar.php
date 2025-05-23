@@ -71,7 +71,7 @@
                                 class="p-1 mt-2 rounded-sm flex items-center transition-all duration-300 ease-in-out
           <?= $current_page == 'allowance' ? 'text-primaryclr bg-mainclr ' : 'text-accentclr bg-primaryclr' ?>
           hover:text-primaryclr hover:bg-mainclr">
-                                <i class='bx bxs-time-five text-lg mr-2'></i>
+                                <i class='bx bxs-wallet-alt text-lg mr-2'></i>
                                 Incentive Allowance
                             </a>
                         </ul>
@@ -79,6 +79,13 @@
 
                 </li>
                 <li>
+                    <a href="index.php?page=leaveManagement"
+                        class="p-2 rounded-sm flex items-center transition-all duration-300 ease-in-out
+          <?= $current_page == 'leaveManagement' ? 'text-primaryclr bg-mainclr ' : 'text-accentclr bg-primaryclr' ?>
+          hover:text-primaryclr hover:bg-mainclr">
+                        <i class='bx bxs-user text-2xl mr-2'></i>
+                        Leave Management
+                    </a>
                 </li>
             </ul>
 
