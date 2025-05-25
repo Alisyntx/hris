@@ -14,6 +14,7 @@ import { handleDownloadDtr } from "./timeKeeping/downloadDtr.js";
 import { handleEditEmployeeDtr } from "./timeKeeping/editEmpDtr.js";
 import { handleDepartments } from "./timeKeeping/departmentsScript.js";
 import { handleAddOvertimeRequest } from "./timeKeeping/addOtRequest.js";
+import {handleLeaveBalances} from './leaveManagement/leaveBalances.js'
 $(document).ready(function () {
     handleEditEmployee();
     handleAddEmployee();
@@ -27,6 +28,8 @@ $(document).ready(function () {
     handleEditEmployeeDtr();
     handleDepartments();
     handleAddOvertimeRequest();
+    handleLeaveBalances();
+    
     $.getScript("public/js/employeeManagement/deleteEmploye.js");
 
     $(document).ready(function () {
@@ -40,14 +43,14 @@ $(document).ready(function () {
         $("#menu-toggle").on("click", function () {
             if (isOpen) {
                 $("#sidebar").removeClass("w-[20%]").addClass("w-0");
-                $("#dtrTableResponsive")
-                    .removeClass("w-[1120px]")
-                    .addClass("w-full");
+                // $("#dtrTableResponsive")
+                //     .removeClass("w-[1120px]")
+                //     .addClass("w-full");
             } else {
                 $("#sidebar").removeClass("w-0").addClass("w-[20%]");
-                $("#dtrTableResponsive")
-                    .removeClass("w-full")
-                    .addClass("w-[1120px]");
+                // $("#dtrTableResponsive")
+                //     .removeClass("w-full")
+                //     .addClass("w-[1120px]");
             }
             isOpen = !isOpen;
         });

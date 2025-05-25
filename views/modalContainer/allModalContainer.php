@@ -36,3 +36,7 @@
 <div id="loadAddReq">
 
 </div>
+<!-- create leave Request -->
+ <div id="loadAddLeaveReq">
+
+ </div>

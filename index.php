@@ -57,7 +57,6 @@ if (!isset($_SESSION['user_id'])) {
     </div>
     <!-- sweat alert for log in successful -->
     <?php if (isset($_GET['login']) && $_GET['login'] === 'success'): ?>
-
         <script>
             Swal.fire({
                 icon: 'success',

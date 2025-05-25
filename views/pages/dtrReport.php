@@ -56,7 +56,7 @@
             <button class="btn btn-primary btnFilters btn-sm flex items-center" id="exportExcelBtn">
                 <i class='bx bx-export text-xl' style='color:#ffffff'></i> Export</button>
         </div>
-        <div class="w-[1120px] h-auto  px-4 mt-2 mb-2 overflow-auto" id="dtrTableResponsive">
+        <div class="w-full h-auto  px-4 mt-2 mb-2 overflow-auto" id="dtrTableResponsive">
             <table class="table table-bordered table-sm min-w-[1000px]" id="tableDTR">
                 <thead>
                     <tr>

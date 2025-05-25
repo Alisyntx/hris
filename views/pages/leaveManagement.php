@@ -16,9 +16,9 @@
                 <input type="search" class="grow" placeholder="Search" />
 
             </label>
-            <button class="btn btn-sm mr-20">
-                <i class='bx bxs-check-circle text-lg'></i>
-                Accept/Reject Leave
+            <button class="btn btn-sm mr-20" id="leaveRequestBtn">
+                <i class='bx bx-edit text-lg'></i>
+                Create Leave Request
             </button>
         </div>
 
@@ -47,31 +47,7 @@
                             <th>Status</th>
                         </tr>
                     </thead>
-                    <tbody>
-                        <!-- row 1 -->
-                        <tr>
-                            <td>
-                                <div class="flex items-center gap-3">
-                                    <div class="avatar">
-                                        <div class="mask mask-squircle h-12 w-12">
-                                            <img
-                                                src="https://img.daisyui.com/images/profile/demo/2@94.webp"
-                                                alt="Avatar Tailwind CSS Component" />
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <div class="font-bold">Hart Hagerty</div>
-                                        <div class="text-sm opacity-50">Web Developer</div>
-                                    </div>
-                                </div>
-                            </td>
-
-                            <td>Office</td>
-                            <td><span class="badge badge-outline badge-primary badge-sm"> 25 Days</span></td>
-                            <td><span class="badge badge-outline badge-info badge-sm"> 19 Days</span></td>
-                            <td><span class="badge badge-outline badge-warning badge-sm"> 22 Days</span></td>
-                            <td><span class="badge badge-outline badge-accent badge-sm"> 25 Days</span></td>
-                        </tr>
+                    <tbody id="creditsTable">
 
                     </tbody>
                 </table>
