@@ -31,27 +31,7 @@
             Leave Balances
         </label>
         <div class="tab-content bg-base-100 border-base-300 p-6">
-            <div class="overflow-x-auto">
-                <div class="font-semibold flex items-center"><i class='text-2xl bx mr-1 text-blue-500 bxs-user-account'></i>
-                    Available Leave Credits per Employee </div>
-                <table class="table">
-                    <!-- head -->
-                    <thead>
-                        <tr>
-
-                            <th>Employee</th>
-                            <th>Department</th>
-                            <th>Total Leave</th>
-                            <th>Used</th>
-                            <th>Remaining</th>
-                            <th>Status</th>
-                        </tr>
-                    </thead>
-                    <tbody id="creditsTable">
-
-                    </tbody>
-                </table>
-            </div>
+            <?php include "tabs/leaveManagementTabs/leaveBalanceContent.php" ?>
         </div>
 
         <label class="tab">
@@ -60,7 +40,9 @@
 
             Leave Requests
         </label>
-        <div class="tab-content bg-base-100 border-base-300 p-6">Tab content 2</div>
+        <div class="tab-content bg-base-100 border-base-300 p-6">
+            <?php include "tabs/leaveManagementTabs/leaveRequestContent.php" ?>
+        </div>
 
         <label class="tab">
             <input type="radio" name="my_tabs_4" />
@@ -68,13 +50,14 @@
 
             Utilization Report
         </label>
-        <div class="tab-content bg-base-100 border-base-300 p-6">Tab content 3</div>
+        <div class="tab-content bg-base-100 border-base-300 p-6">
+            <?php include "tabs/leaveManagementTabs/UtilReportContent.php" ?>
+        </div>
         <label class="tab">
             <input type="radio" name="my_tabs_4" />
             <i class='bx bx-calendar text-lg mr-2'></i>
-
             Maternity Leave Calendar
         </label>
-        <div class="tab-content bg-base-100 border-base-300 p-6">Tab content 3</div>
+        <div class="tab-content bg-base-100 border-base-300 p-6"><?php include "tabs/leaveManagementTabs/matLeaveContent.php" ?></div>
     </div>
 </div>
