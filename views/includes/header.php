@@ -11,7 +11,9 @@ $page_titles = [
     'settings' => 'System Settings',
     'department' => 'Department Management',
     'overtimeRequest' => 'Overtime Requests',
-    'allowance' => 'Employee Incentive-Based Allowance'
+    'allowance' => 'Employee Incentive-Based Allowance',
+    'disciplinary' => 'Disciplinary Action Report'
+
 ];
 
 // Use custom title or fallback

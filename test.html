@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Disciplinary Management System</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@4.12.10/dist/full.min.css" rel="stylesheet" type="text/css" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body class="bg-base-200 min-h-screen">
+    <div class="container mx-auto p-6">
+        <!-- Header -->
+        <div class="mb-8">
+            <h1 class="text-4xl font-bold text-base-content mb-2">Disciplinary Management System</h1>
+            <p class="text-base-content/70">Manage incident reports, disciplinary actions, and employee violations</p>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="flex flex-wrap gap-4 mb-8">
+            <button class="btn btn-primary">
+                <i class="fas fa-plus"></i>
+                Issue NTE
+            </button>
+            <button class="btn btn-outline">
+                <i class="fas fa-download"></i>
+                Download Reports
+            </button>
+            <button class="btn btn-outline">
+                <i class="fas fa-search"></i>
+                Search Employee
+            </button>
+            <button class="btn btn-outline">
+                <i class="fas fa-filter"></i>
+                Filter Records
+            </button>
+        </div>
+
+        <!-- Sections -->
+        <div class="space-y-6">
+            <!-- Incident Reports -->
+            <div class="collapse collapse-open bg-base-100 shadow-lg">
+                <div class="collapse-title text-xl font-medium flex items-center gap-3 bg-info/10">
+                    <div class="w-3 h-3 bg-success rounded-full"></div>
+                    <i class="fas fa-file-alt text-info"></i>
+                    <span>Incident Reports</span>
+                    <div class="badge badge-neutral ml-auto">3</div>
+                </div>
+                <div class="collapse-content">
+                    <div class="overflow-x-auto mt-4">
+                        <table class="table table-zebra w-full">
+                            <thead>
+                                <tr>
+                                    <th>Report ID</th>
+                                    <th>Employee</th>
+                                    <th>Department</th>
+                                    <th>Type</th>
+                                    <th>Date</th>
+                                    <th>Severity</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="hover">
+                                    <td class="font-semibold">IR001</td>
+                                    <td>John Doe</td>
+                                    <td>Sales</td>
+                                    <td>Policy Violation</td>
+                                    <td>2025-06-10</td>
+                                    <td><span class="badge badge-warning">Medium</span></td>
+                                    <td><span class="badge badge-info">Under Review</span></td>
+                                    <td>
+                                        <div class="flex gap-2">
+                                            <button class="btn btn-ghost btn-xs text-info">
+                                                <i class="fas fa-eye"></i>
+                                            </button>
+                                            <button class="btn btn-ghost btn-xs text-success">
+                                                <i class="fas fa-edit"></i>
+                                            </button>
+                                            <button class="btn btn-ghost btn-xs text-error">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr class="hover">
+                                    <td class="font-semibold">IR002</td>
+                                    <td>Jane Smith</td>
+                                    <td>HR</td>
+                                    <td>Misconduct</td>
+                                    <td>2025-06-08</td>
+                                    <td><span class="badge badge-error">High</span></td>
+                                    <td><span class="badge badge-success">Resolved</span></td>
+                                    <td>
+                                        <div class="flex gap-2">
+                                            <button class="btn btn-ghost btn-xs text-info">
+                                                <i class="fas fa-eye"></i>
+                                            </button>
+                                            <button class="btn btn-ghost btn-xs text-success">
+                                                <i class="fas fa-edit"></i>
+                                            </button>
+                                            <button class="btn btn-ghost btn-xs text-error">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr class="hover">
+                                    <td class="font-semibold">IR003</td>
+                                    <td>Mike Johnson</td>
+                                    <td>IT</td>
+                                    <td>Attendance</td>
+                                    <td>2025-06-05</td>
+                                    <td><span class="badge badge-success">Low</span></td>
+                                    <td><span class="badge badge-warning">Pending</span></td>
+                                    <td>
+                                        <div class="flex gap-2">
+                                            <button class="btn btn-ghost btn-xs text-info">
+                                                <i class="fas fa-eye"></i>
+                                            </button>
+                                            <button class="btn btn-ghost btn-xs text-success">
+                                                <i class="fas fa-edit"></i>
+                                            </button>
+                                            <button class="btn btn-ghost btn-xs text-error">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Notice to Explain (NTE) -->
+            <div class="collapse collapse-open bg-base-100 shadow-lg">
+                <div class="collapse-title text-xl font-medium flex items-center gap-3 bg-warning/10">
+                    <div class="w-3 h-3 bg-success rounded-full"></div>
+                    <i class="fas fa-exclamation-triangle text-warning"></i>
+                    <span>Notice to Explain (NTE)</span>
+                    <div class="badge badge-neutral ml-auto">2</div>
+                </div>
+                <div class="collapse-content">
+                    <div class="overflow-x-auto mt-4">
+                        <table class="table table-zebra w-full">
+                            <thead>
+                                <tr>
+                                    <th>NTE ID</th>
+                                    <th>Employee</th>
+                                    <th>Department</th>
+                                    <th>Issue</th>
+                                    <th>Due Date</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="hover">
+                                    <td class="font-semibold">NTE001</td>
+                                    <td>Sarah Wilson</td>
+                                    <td>Marketing</td>
+                                    <td>Late Submission</td>
+                                    <td>2025-06-15</td>
+                                    <td><span class="badge badge-warning">Pending Response</span></td>
+                                    <td>
+                                        <div class="flex gap-2">
+                                            <button class="btn btn-ghost btn-xs text-info">
+                                                <i class="fas fa-eye"></i>
+                                            </button>
+                                            <button class="btn btn-ghost btn-xs text-success">
+                                                <i class="fas fa-edit"></i>
+                                            </button>
+                                            <button class="btn btn-ghost btn-xs text-error">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr class="hover">
+                                    <td class="font-semibold">NTE002</td>
+                                    <td>David Brown</td>
+                                    <td>Operations</td>
+                                    <td>Safety Violation</td>
+                                    <td>2025-06-12</td>
+                                    <td><span class="badge badge-success">Response Received</span></td>
+                                    <td>
+                                        <div class="flex gap-2">
+                                            <button class="btn btn-ghost btn-xs text-info">
+                                                <i class="fas fa-eye"></i>
+                                            </button>
+                                            <button class="btn btn-ghost btn-xs text-success">
+                                                <i class="fas fa-edit"></i>
+                                            </button>
+                                            <button class="btn btn-ghost btn-xs text-error">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Disciplinary Actions -->
+            <div class="collapse collapse-open bg-base-100 shadow-lg">
+                <div class="collapse-title text-xl font-medium flex items-center gap-3 bg-error/10">
+                    <div class="w-3 h-3 bg-success rounded-full"></div>
+                    <i class="fas fa-user-times text-error"></i>
+                    <span>Disciplinary Actions</span>
+                    <div class="badge badge-neutral ml-auto">3</div>
+                </div>
+                <div class="collapse-content">
+                    <div class="overflow-x-auto mt-4">
+                        <table class="table table-zebra w-full">
+                            <thead>
+                                <tr>
+                                    <th>Action ID</th>
+                                    <th>Employee</th>
+                                    <th>Department</th>
+                                    <th>Action Type</th>
+                                    <th>Date</th>
+                                    <th>Reason</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="hover">
+                                    <td class="font-semibold">DA001</td>
+                                    <td>Tom Anderson</td>
+                                    <td>Finance</td>
+                                    <td>Written Warning</td>
+                                    <td>2025-06-01</td>
+                                    <td>Tardiness</td>
+                                    <td><span class="badge badge-info">Active</span></td>
+                                    <td>
+                                        <div class="flex gap-2">
+                                            <button class="btn btn-ghost btn-xs text-info">
+                                                <i class="fas fa-eye"></i>
+                                            </button>
+                                            <button class="btn btn-ghost btn-xs text-success">
+                                                <i class="fas fa-edit"></i>
+                                            </button>
+                                            <button class="btn btn-ghost btn-xs text-error">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr class="hover">
+                                    <td class="font-semibold">DA002</td>
+                                    <td>Lisa Garcia</td>
+                                    <td>Sales</td>
+                                    <td>Suspension</td>
+                                    <td>2025-05-28</td>
+                                    <td>Insubordination</td>
+                                    <td><span class="badge badge-success">Completed</span></td>
+                                    <td>
+                                        <div class="flex gap-2">
+                                            <button class="btn btn-ghost btn-xs text-info">
+                                                <i class="fas fa-eye"></i>
+                                            </button>
+                                            <button class="btn btn-ghost btn-xs text-success">
+                                                <i class="fas fa-edit"></i>
+                                            </button>
+                                            <button class="btn btn-ghost btn-xs text-error">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr class="hover">
+                                    <td class="font-semibold">DA003</td>
+                                    <td>Robert Lee</td>
+                                    <td>IT</td>
+                                    <td>Termination</td>
+                                    <td>2025-05-25</td>
+                                    <td>Misconduct</td>
+                                    <td><span class="badge badge-success">Completed</span></td>
+                                    <td>
+                                        <div class="flex gap-2">
+                                            <button class="btn btn-ghost btn-xs text-info">
+                                                <i class="fas fa-eye"></i>
+                                            </button>
+                                            <button class="btn btn-ghost btn-xs text-success">
+                                                <i class="fas fa-edit"></i>
+                                            </button>
+                                            <button class="btn btn-ghost btn-xs text-error">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Violation Trends -->
+            <div class="collapse collapse-open bg-base-100 shadow-lg">
+                <div class="collapse-title text-xl font-medium flex items-center gap-3 bg-secondary/10">
+                    <div class="w-3 h-3 bg-success rounded-full"></div>
+                    <i class="fas fa-chart-line text-secondary"></i>
+                    <span>Violation Trends</span>
+                </div>
+                <div class="collapse-content">
+                    <!-- Statistics Cards -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mt-4 mb-8">
+                        <div class="stat bg-info/20 rounded-lg">
+                            <div class="stat-figure text-info">
+                                <i class="fas fa-file-alt text-2xl"></i>
+                            </div>
+                            <div class="stat-title text-info-content">Total Reports</div>
+                            <div class="stat-value text-info-content">24</div>
+                        </div>
+                        
+                        <div class="stat bg-warning/20 rounded-lg">
+                            <div class="stat-figure text-warning">
+                                <i class="fas fa-exclamation-triangle text-2xl"></i>
+                            </div>
+                            <div class="stat-title text-warning-content">Pending NTEs</div>
+                            <div class="stat-value text-warning-content">8</div>
+                        </div>
+                        
+                        <div class="stat bg-error/20 rounded-lg">
+                            <div class="stat-figure text-error">
+                                <i class="fas fa-user-times text-2xl"></i>
+                            </div>
+                            <div class="stat-title text-error-content">Active Actions</div>
+                            <div class="stat-value text-error-content">12</div>
+                        </div>
+                        
+                        <div class="stat bg-success/20 rounded-lg">
+                            <div class="stat-figure text-success">
+                                <i class="fas fa-check-circle text-2xl"></i>
+                            </div>
+                            <div class="stat-title text-success-content">Resolved</div>
+                            <div class="stat-value text-success-content">156</div>
+                        </div>
+                    </div>
+
+                    <!-- Department Breakdown -->
+                    <div class="mt-6">
+                        <h3 class="text-xl font-semibold mb-4">Department Breakdown</h3>
+                        <div class="space-y-4">
+                            <div class="card bg-base-200 p-4">
+                                <div class="flex justify-between items-center mb-2">
+                                    <span class="font-medium">Sales</span>
+                                    <span class="text-sm opacity-70">2 reports</span>
+                                </div>
+                                <progress class="progress progress-primary w-full" value="20" max="100"></progress>
+                            </div>
+                            
+                            <div class="card bg-base-200 p-4">
+                                <div class="flex justify-between items-center mb-2">
+                                    <span class="font-medium">HR</span>
+                                    <span class="text-sm opacity-70">4 reports</span>
+                                </div>
+                                <progress class="progress progress-primary w-full" value="40" max="100"></progress>
+                            </div>
+                            
+                            <div class="card bg-base-200 p-4">
+                                <div class="flex justify-between items-center mb-2">
+                                    <span class="font-medium">IT</span>
+                                    <span class="text-sm opacity-70">6 reports</span>
+                                </div>
+                                <progress class="progress progress-primary w-full" value="60" max="100"></progress>
+                            </div>
+                            
+                            <div class="card bg-base-200 p-4">
+                                <div class="flex justify-between items-center mb-2">
+                                    <span class="font-medium">Operations</span>
+                                    <span class="text-sm opacity-70">8 reports</span>
+                                </div>
+                                <progress class="progress progress-primary w-full" value="80" max="100"></progress>
+                            </div>
+                            
+                            <div class="card bg-base-200 p-4">
+                                <div class="flex justify-between items-center mb-2">
+                                    <span class="font-medium">Finance</span>
+                                    <span class="text-sm opacity-70">10 reports</span>
+                                </div>
+                                <progress class="progress progress-primary w-full" value="100" max="100"></progress>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Add collapsible functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const collapses = document.querySelectorAll('.collapse');
+            
+            collapses.forEach(collapse => {
+                const title = collapse.querySelector('.collapse-title');
+                title.addEventListener('click', function() {
+                    collapse.classList.toggle('collapse-open');
+                    collapse.classList.toggle('collapse-close');
+                });
+            });
+        });
+    </script>
+</body>
+</html>

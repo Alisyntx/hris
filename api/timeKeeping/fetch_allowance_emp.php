@@ -14,19 +14,19 @@ try {
             </div>
 
             <div class="w-full mt-1 gap-1 h-20 flex ">
-                <div class="w-full flex flex-col bg-secondaryclr rounded-md items-center justify-center">
+                <div class="w-full flex flex-col bg-amber-100 rounded-md items-center justify-center">
                     <span class="text-2xl font-semibold text-blue-600">20%</span>
                     <span class="text-sm text-gray-500">Attendance rate</span>
                 </div>
-                <div class="w-full flex flex-col bg-secondaryclr rounded-md items-center justify-center">
+                <div class="w-full flex flex-col bg-amber-100 rounded-md items-center justify-center">
                     <span class="text-2xl font-semibold text-blue-600">20%</span>
                     <span class="text-sm text-gray-500">Overtime Hours</span>
                 </div>
-                <div class="w-full flex flex-col bg-secondaryclr rounded-md items-center justify-center">
+                <div class="w-full flex flex-col bg-amber-100 rounded-md items-center justify-center">
                     <span class="text-2xl font-semibold text-blue-600">20%</span>
                     <span class="text-sm text-gray-500">KPI score</span>
                 </div>
-                <div class="w-full flex flex-col bg-secondaryclr rounded-md items-center justify-center">
+                <div class="w-full flex flex-col bg-amber-100 rounded-md items-center justify-center">
                     <span class="text-2xl font-semibold text-blue-600">20%</span>
                     <span class="text-sm text-gray-500">Total Allowance</span>
                 </div>

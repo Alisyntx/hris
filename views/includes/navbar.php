@@ -76,7 +76,6 @@
                             </a>
                         </ul>
                     </details>
-
                 </li>
                 <li>
                     <a href="index.php?page=leaveManagement"
@@ -85,6 +84,15 @@
           hover:text-primaryclr hover:bg-mainclr">
                         <i class='bx bxs-user text-2xl mr-2'></i>
                         Leave Management
+                    </a>
+                </li>
+                <li>
+                    <a href="index.php?page=disciplinary"
+                        class="p-2 rounded-sm flex items-center transition-all duration-300 ease-in-out
+          <?= $current_page == 'disciplinary' ? 'text-primaryclr bg-mainclr ' : 'text-accentclr bg-primaryclr' ?>
+          hover:text-primaryclr hover:bg-mainclr">
+                        <i class='bx bxs-error text-2xl mr-2'></i>
+                        Disciplinary Action
                     </a>
                 </li>
             </ul>

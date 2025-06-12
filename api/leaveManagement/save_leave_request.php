@@ -9,10 +9,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $leave_type = $_POST['leave_type'];
         $start_date = $_POST['start_date'];
         $end_date = $_POST['end_date'];
-
+        $status = "pending";
         // Prepare and execute
-        $stmt = $pdo->prepare("INSERT INTO leave_request (employee_id, leave_type, start_date, end_date) VALUES (?, ?, ?, ?)");
-        $stmt->execute([$employee_name, $leave_type, $start_date, $end_date]);
+        $stmt = $pdo->prepare("INSERT INTO leave_request (employee_id, leave_type, start_date, end_date, status) VALUES (?, ?, ?, ?, ?)");
+        $stmt->execute([$employee_name, $leave_type, $start_date, $end_date, $status]);
 
         echo json_encode("Leave request saved successfully!");
     } catch (PDOException $e) {

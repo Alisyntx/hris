@@ -1,6 +1,14 @@
 <div class="w-full h-screen font-popins">
     <div class=" h-auto flex justify-between flex-row rounded-md ">
         <div class="w-auto flex">
+            <button class="btn btn-sm btn-primary mr-1" id="leaveRequestBtn">
+                <i class='bx bx-plus-circle text-lg'></i>
+                Issue NTE
+            </button>
+            <button class="btn btn-sm mr-1" id="leaveRequestBtn">
+                <i class='bx bx-import text-lg'></i>
+                Download Reports
+            </button>
             <label class="input input-sm ml-1 mr-1">
                 <svg class="h-[1em] opacity-50" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                     <g
@@ -16,10 +24,7 @@
                 <input type="search" class="grow" placeholder="Search" />
 
             </label>
-            <button class="btn btn-sm mr-20" id="leaveRequestBtn">
-                <i class='bx bx-edit text-lg'></i>
-                Create Leave Request
-            </button>
+
         </div>
 
     </div>
@@ -27,38 +32,38 @@
     <div class="tabs tabs-lift mt-2">
         <label class="tab">
             <input type="radio" name="my_tabs_4" checked="checked" />
-            <i class='bx bx-hdd text-lg mr-2'></i>
-            Leave Balances
+            <i class='bx bx-chart text-lg mr-2'></i>
+            Violation Trend
         </label>
         <div class="tab-content bg-base-100 border-base-300 p-6">
-            <?php include "tabs/leaveManagementTabs/leaveBalanceContent.php" ?>
+            <?php include "tabs/disciplinaryTabs/violationTrends.php" ?>
         </div>
 
         <label class="tab">
             <input type="radio" name="my_tabs_4" />
-            <i class='bx bx-time text-lg mr-2'></i>
-            Leave Requests
+            <i class='bx bx-food-menu text-lg mr-2'></i>
+            Incident Report
         </label>
         <div class="tab-content bg-base-100 border-base-300 p-2">
-            <?php include "tabs/leaveManagementTabs/leaveRequestContent.php" ?>
+            <?php include "tabs/disciplinaryTabs/leaveRequestContent.php" ?>
         </div>
 
         <label class="tab">
             <input type="radio" name="my_tabs_4" />
-            <i class='bx bx-objects-horizontal-left text-lg mr-2'></i>
-            Utilization Report
+            <i class='bx bx-error-alt text-lg mr-2'></i>
+            Notice to Explain (NTE)
         </label>
         <div class="tab-content bg-base-100 border-base-300 p-6">
-            <?php include "tabs/leaveManagementTabs/UtilReportContent.php" ?>
+            <?php include "tabs/disciplinaryTabs/UtilReportContent.php" ?>
         </div>
 
         <label class="tab">
             <input type="radio" name="my_tabs_4" />
-            <i class='bx bx-calendar text-lg mr-2'></i>
-            Maternity Leave Calendar
+            <i class='bx bxs-user-x text-lg mr-2'></i>
+            Disciplinary Action
         </label>
         <div class="tab-content bg-base-100 border-base-300 p-6">
-            <?php include "tabs/leaveManagementTabs/matLeaveContent.php" ?>
+            <?php include "tabs/disciplinaryTabs/matLeaveContent.php" ?>
         </div>
     </div>
 </div>

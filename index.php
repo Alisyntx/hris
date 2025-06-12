@@ -42,7 +42,7 @@ if (!isset($_SESSION['user_id'])) {
                 </div>
                 <?php
                 $page = isset($_GET['page']) ? $_GET['page'] : 'dashboard';
-                $allowed_pages = ['dashboard', 'employees', 'attendance', 'dtrReport', 'reports', 'settings', 'department', 'overtimeRequest', 'allowance', 'leaveManagement'];
+                $allowed_pages = ['dashboard', 'employees', 'attendance', 'dtrReport', 'reports', 'settings', 'department', 'overtimeRequest', 'allowance', 'leaveManagement', 'disciplinary'];
 
                 if (in_array($page, $allowed_pages)) {
                     include "views/pages/$page.php";

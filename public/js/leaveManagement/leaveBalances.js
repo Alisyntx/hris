@@ -34,10 +34,10 @@ export function handleLeaveBalances() {
                             </div>
                         </td>
                         <td>${department}</td>
-                        <td><span class="badge badge-outline badge-neutral badge-sm">${total} Days</span></td>
-                        <td><span class="badge badge-outline badge-neutral badge-sm">${used} Days</span></td>
-                        <td><span class="badge badge-outline badge-neutral badge-sm">${remaining} Days</span></td>
-                        <td><span class="badge badge-outline badge-primary badge-sm"> Active</span></td>
+                        <td><span class="badge badge-outline badge-neutral badge-sm font-semibold">${total} Days</span></td>
+                        <td><span class="badge badge-outline badge-neutral badge-sm font-semibold">${used} Days</span></td>
+                        <td><span class="badge badge-outline badge-neutral badge-sm font-semibold">${remaining} Days</span></td>
+                        <td><span class="badge badge-outline badge-primary badge-sm font-semibold"> Active</span></td>
                     </tr>
                 `;
           tbody.append(row);
@@ -86,4 +86,54 @@ export function handleLeaveBalances() {
       },
     });
   });
+  // buttons handling
+  $(".btn-approve").on("click", function () {
+    handleAction($(this).data("id"), "approved");
+  });
+
+  $(".btn-decline").on("click", function () {
+    handleAction($(this).data("id"), "rejected");
+  });
+  // functions for buttons in leave request
+  function handleAction(id, status) {
+    console.log("Sending request...", id, status);
+
+    Swal.fire({
+      title: `Are you sure?`,
+      text: `Do you want to mark this as ${status}?`,
+      icon: "question",
+      showCancelButton: true,
+      confirmButtonText: "Yes, update it!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        $.ajax({
+          url: "api/leaveManagement/update_leave_status.php", // make sure this path is correct
+          type: "POST",
+          data: { id: id, status: status },
+          success: function (response) {
+            console.log("AJAX response:", response);
+
+            try {
+              const res =
+                typeof response === "string" ? JSON.parse(response) : response;
+              if (res.success) {
+                Swal.fire("Success!", res.message, "success").then(() =>
+                  location.reload()
+                );
+              } else {
+                Swal.fire("Error", res.message, "error");
+              }
+            } catch (e) {
+              console.error("JSON parse error", e);
+              Swal.fire("Error", "Invalid server response.", "error");
+            }
+          },
+          error: function (xhr, status, error) {
+            console.error("AJAX error:", xhr.responseText);
+            Swal.fire("Error", "AJAX request failed.", "error");
+          },
+        });
+      }
+    });
+  }
 }
